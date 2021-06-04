@@ -1,0 +1,42 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+.login-form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-items {
+    margin-bottom: 1rem !important;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.login-Paper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-Paper h3 {
+    font-family: "Roboto Light", sans-serif;
+    margin-bottom: 1rem;
+}
+
+.login-form-Logo {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+.Signup-link-parent{
+    font-family: "Roboto Light", sans-serif;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
