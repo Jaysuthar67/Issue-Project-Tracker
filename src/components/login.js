@@ -75,7 +75,7 @@ class Login extends Component {
             <div className="login-container">
                 <Paper elevation={3} className="w-100 login-Paper">
                     {this.state.loading ? <LinearProgress className="w-100"/> : ""}
-                    {/*<Alert severity="error">This is an error alert — check it out!</Alert>*/}
+                    {/*TODO Setup wrong password alert*/}
                     <div className="login-form-Logo"><img src={logo} alt="logo"/></div>
                     <Typography variant="h3">
                         Login
