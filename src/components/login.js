@@ -8,12 +8,14 @@ import {
     Input,
     InputAdornment,
     InputLabel,
+    LinearProgress,
     Link,
     Paper,
     Typography
 } from "@material-ui/core";
 import logo from '../assets/AppIcon.svg';
 import {Visibility, VisibilityOff} from "@material-ui/icons";
+import {validateEmail} from "./helperFunctions";
 
 class Login extends Component {
     constructor(props) {
@@ -28,9 +30,19 @@ class Login extends Component {
     }
 
     loginClickHandler = () => {
-        this.setState({
-            loading: !this.state.loading
-        })
+        if (this.state.emailNotValid) {
+            this.emailRef.current.children[0].focus()
+        } else {
+            this.setState({
+                loading: true
+            })
+            setTimeout(()=>{
+                this.setState({
+                    loading: false
+                })
+            }, 2000);
+            // alert(`Email : ${this.emailRef.current.children[0].value}\nPassword : ${this.passwordRef.current.children[0].value}`)
+        }
     }
     handleClickShowPassword = () => {
         this.setState({
@@ -43,8 +55,15 @@ class Login extends Component {
         })
     }
     emailValidator = (e) => {
-        console.log(e.target.value)
-        console.log(this.emailRef.current.children[0].value)
+        if (validateEmail(e.target.value)) {
+            this.setState({
+                emailNotValid: false
+            })
+        } else {
+            this.setState({
+                emailNotValid: true
+            })
+        }
     }
 
     componentDidMount() {
@@ -55,26 +74,29 @@ class Login extends Component {
         return (
             <div className="login-container">
                 <Paper elevation={3} className="w-100 login-Paper">
+                    {this.state.loading ? <LinearProgress className="w-100"/> : ""}
+                    {/*<Alert severity="error">This is an error alert — check it out!</Alert>*/}
                     <div className="login-form-Logo"><img src={logo} alt="logo"/></div>
                     <Typography variant="h3">
                         Login
                     </Typography>
                     <form className="login-form" autoComplete="off">
-                        <FormControl className="login-items" fullWidth={true} error={this.state.emailNotValid}>
+                        <FormControl className="login-items" fullWidth={true} error={this.state.emailNotValid}
+                                     disabled={this.state.loading}>
                             <InputLabel htmlFor="email">Email *</InputLabel>
-                            <Input onBlur={this.emailValidator} id="email" type="email" ref={this.emailRef}/>
+                            <Input onBlur={this.emailValidator} id="email" type="email" ref={this.emailRef} autoFocus/>
                             <FormHelperText
-                                id="my-helper-text">{this.state.emailNotValid ? "Email Invalid" : ""}</FormHelperText>
+                                id="my-helper-text">{this.state.emailNotValid ? "Please enter valid Email Address" : ""}</FormHelperText>
                         </FormControl>
-                        <FormControl className="login-items" fullWidth={true}>
+                        <FormControl className="login-items" fullWidth={true} disabled={this.state.loading}>
                             <InputLabel htmlFor="email">Password *</InputLabel>
                             <Input id="password" ref={this.passwordRef}
                                    type={this.state.showPassword ? "text" : "password"}
                                    endAdornment={
                                        <InputAdornment position="end">
-                                           <IconButton
-                                               aria-label="toggle password visibility"
-                                               onClick={this.handleClickShowPassword}
+                                           <IconButton disabled={this.state.loading}
+                                                       aria-label="toggle password visibility"
+                                                       onClick={this.handleClickShowPassword}
                                            >
                                                {this.state.showPassword ? <VisibilityOff/> : <Visibility/>}
                                            </IconButton>
@@ -82,7 +104,8 @@ class Login extends Component {
                                    }
                             />
                         </FormControl>
-                        <Button className="login-items" onClick={this.loginClickHandler} variant="contained"
+                        <Button className="login-items" disabled={this.state.loading}
+                                onClick={this.loginClickHandler} variant="contained"
                                 size="large" color="primary">
                             Login
                         </Button>

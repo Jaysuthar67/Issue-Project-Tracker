@@ -29,6 +29,7 @@
 .login-Paper h3 {
     font-family: "Roboto Light", sans-serif;
     margin-bottom: 1rem;
+    overflow: hidden;
 }
 
 .login-form-Logo {
