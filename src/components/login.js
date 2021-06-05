@@ -25,44 +25,58 @@ class Login extends Component {
         this.state = {
             loading: false,
             showPassword: false,
-            emailNotValid: false
+            emailNotValid: false,
+            passwordNotValid: false
         }
     }
 
-    loginClickHandler = () => {
+    handleSubmit = (e) => {
+        e.preventDefault();
         if (this.state.emailNotValid) {
-            this.emailRef.current.children[0].focus()
+            this.emailRef.current.children[0].focus();
+        } else if (this.state.passwordNotValid) {
+            this.passwordRef.current.children[0].focus();
         } else {
             this.setState({
                 loading: true
             })
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.setState({
                     loading: false
-                })
+                });
             }, 2000);
-            // alert(`Email : ${this.emailRef.current.children[0].value}\nPassword : ${this.passwordRef.current.children[0].value}`)
         }
     }
     handleClickShowPassword = () => {
         this.setState({
             showPassword: !this.state.showPassword
-        })
+        });
     }
     handleMouseDownPassword = () => {
         this.setState({
             showPassword: !this.state.showPassword
-        })
+        });
     }
     emailValidator = (e) => {
         if (validateEmail(e.target.value)) {
             this.setState({
                 emailNotValid: false
-            })
+            });
         } else {
             this.setState({
                 emailNotValid: true
-            })
+            });
+        }
+    }
+    isPasswordEmpty = (e) => {
+        if (e.target.value) {
+            this.setState({
+                passwordNotValid: false
+            });
+        } else {
+            this.setState({
+                passwordNotValid: true
+            });
         }
     }
 
@@ -80,17 +94,24 @@ class Login extends Component {
                     <Typography variant="h3">
                         Login
                     </Typography>
-                    <form className="login-form" autoComplete="off">
-                        <FormControl className="login-items" fullWidth={true} error={this.state.emailNotValid}
-                                     disabled={this.state.loading}>
+                    <form className="login-form" autoComplete="off" onSubmit={this.handleSubmit}>
+                        <FormControl className="login-items"
+                                     fullWidth={true}
+                                     disabled={this.state.loading}
+                                     error={this.state.emailNotValid}>
                             <InputLabel htmlFor="email">Email *</InputLabel>
                             <Input onBlur={this.emailValidator} id="email" type="email" ref={this.emailRef} autoFocus/>
                             <FormHelperText
                                 id="my-helper-text">{this.state.emailNotValid ? "Please enter valid Email Address" : ""}</FormHelperText>
                         </FormControl>
-                        <FormControl className="login-items" fullWidth={true} disabled={this.state.loading}>
+                        <FormControl className="login-items"
+                                     fullWidth={true}
+                                     disabled={this.state.loading}
+                                     error={this.state.passwordNotValid}>
                             <InputLabel htmlFor="email">Password *</InputLabel>
-                            <Input id="password" ref={this.passwordRef}
+                            <Input id="password"
+                                   ref={this.passwordRef}
+                                   onBlur={this.isPasswordEmpty}
                                    type={this.state.showPassword ? "text" : "password"}
                                    endAdornment={
                                        <InputAdornment position="end">
@@ -105,7 +126,7 @@ class Login extends Component {
                             />
                         </FormControl>
                         <Button className="login-items" disabled={this.state.loading}
-                                onClick={this.loginClickHandler} variant="contained"
+                                type="submit" variant="contained"
                                 size="large" color="primary">
                             Login
                         </Button>
