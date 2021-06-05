@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 5/6/2021
+ *  Created by Jay Suthar on 6/6/2021
  */
 
 import React, {Component} from 'react';
@@ -14,13 +14,13 @@ import {
     InputAdornment,
     InputLabel,
     LinearProgress,
-    Link,
     Paper,
     Typography
 } from "@material-ui/core";
 import logo from '../assets/AppIcon.svg';
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import {validateEmail} from "./helperFunctions";
+import {Link} from "react-router-dom";
 
 class Login extends Component {
     constructor(props) {
@@ -138,9 +138,8 @@ class Login extends Component {
                     </form>
                     <div className="Signup-link-parent">
                         Don’t Have Account?&nbsp;
-                        <Link href="">Create New</Link>
+                        <Link to="/signup">Create New</Link>
                     </div>
-
                 </Paper>
             </div>
         );
