@@ -1,18 +1,18 @@
-.login-container {
+.signup-container {
     display: flex;
     justify-content: center;
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
 }
 
-.login-form {
+.signup-form {
     width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.login-items {
+.signup-items {
     margin-bottom: 1rem !important;
 }
 
@@ -20,22 +20,23 @@
     width: 100%;
 }
 
-.login-Paper {
+.signup-Paper {
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
-.login-Paper h3 {
+.signup-Paper h4 {
     font-family: "Roboto Light", sans-serif;
     margin-bottom: 1rem;
     overflow: hidden;
 }
 
-.login-form-Logo {
+.signup-form-Logo {
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
+
 .Signup-link-parent {
     font-family: "Roboto Light", sans-serif;
     margin-top: 1rem;
@@ -45,4 +46,15 @@
 .Signup-link-parent a {
     font-family: "Roboto", sans-serif;
     color: hsl(167, 37%, 44%);
+}
+
+.nameDiv {
+    display: flex;
+    width: 100%;
+    padding: 0;
+}
+
+.lastName {
+    width: 100%;
+    margin: 0.2rem !important;
 }

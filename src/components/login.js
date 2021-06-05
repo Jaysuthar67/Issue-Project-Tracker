@@ -26,7 +26,7 @@ class Login extends Component {
             loading: false,
             showPassword: false,
             emailNotValid: false,
-            passwordNotValid: false
+            passwordEmpty: false
         }
     }
 
@@ -34,7 +34,7 @@ class Login extends Component {
         e.preventDefault();
         if (this.state.emailNotValid) {
             this.emailRef.current.children[0].focus();
-        } else if (this.state.passwordNotValid) {
+        } else if (this.state.passwordEmpty) {
             this.passwordRef.current.children[0].focus();
         } else {
             this.setState({
@@ -71,11 +71,11 @@ class Login extends Component {
     isPasswordEmpty = (e) => {
         if (e.target.value) {
             this.setState({
-                passwordNotValid: false
+                passwordEmpty: false
             });
         } else {
             this.setState({
-                passwordNotValid: true
+                passwordEmpty: true
             });
         }
     }
@@ -107,7 +107,7 @@ class Login extends Component {
                         <FormControl className="login-items"
                                      fullWidth={true}
                                      disabled={this.state.loading}
-                                     error={this.state.passwordNotValid}>
+                                     error={this.state.passwordEmpty}>
                             <InputLabel htmlFor="email">Password *</InputLabel>
                             <Input id="password"
                                    ref={this.passwordRef}
@@ -133,7 +133,7 @@ class Login extends Component {
                     </form>
                     <div className="Signup-link-parent">
                         Don’t Have Account?&nbsp;
-                        <Link>Create New</Link>
+                        <Link href="">Create New</Link>
                     </div>
 
                 </Paper>
