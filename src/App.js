@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2021. All Rights Reserved
+ *  Created by Jay Suthar on 5/6/2021
+ */
+
 import './App.css';
 import React, {Component} from 'react';
 import {createMuiTheme, ThemeProvider} from "@material-ui/core";
