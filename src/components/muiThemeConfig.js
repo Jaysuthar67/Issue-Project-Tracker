@@ -1,9 +1,9 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 5/6/2021
+ *  Created by Jay Suthar on 7/6/2021
  */
 
-export default {
+const muiThemeConfig = {
     palette: {
         type: 'dark',
         primary: {
@@ -25,3 +25,4 @@ export default {
         },
     },
 }
+export default muiThemeConfig;

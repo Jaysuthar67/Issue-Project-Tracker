@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 6/6/2021
+ *  Created by Jay Suthar on 7/6/2021
  */
 
 import React, {Component} from 'react';
@@ -138,7 +138,7 @@ class Login extends Component {
                     </form>
                     <div className="Signup-link-parent">
                         Don’t Have Account?&nbsp;
-                        <Link to="/signup">Create New</Link>
+                        {!this.state.loading ? <Link to="/signup">Create New</Link> : "Create New"}
                     </div>
                 </Paper>
             </div>
