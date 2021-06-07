@@ -11,15 +11,45 @@ import Dashboard from "./components/dashboard";
 import {BrowserRouter as Router, Redirect, Route} from "react-router-dom";
 import Login from "./components/login";
 import Signup from "./components/signup";
+import {AuthProvider} from "./components/Contexts/auth";
+import "firebase/auth";
+import {FirebaseAuth} from "./firebaseInit";
 
 class App extends Component {
+    authStateListener;
+
     constructor(props) {
         super(props);
         this.state = {
-            user: {
-                username: "null"
-            }
+            user: null
         }
+    }
+
+
+
+    componentDidMount() {
+        this.authStateListener =  FirebaseAuth.onAuthStateChanged((currentUser) => {
+            this.setState({
+                user: currentUser
+            });
+        });
+    }
+
+    componentWillUnmount() {
+        // alert("App Unmount");
+        this.authStateListener = undefined;
+    }
+
+    handler = () => {
+        console.log("handlerCalled");
+    }
+    signOutHandler = () => {
+        FirebaseAuth.signOut().then(() => {
+            // Sign-out successful.
+        }).catch((error) => {
+            console.log(error);
+            // An error happened.
+        });
     }
 
     render() {
@@ -27,23 +57,24 @@ class App extends Component {
         return (
             <ThemeProvider theme={theme}>
                 <Router>
-                    <div className="App">
-                        <Route exact path="/">
-                            {this.state.user.username ? <Redirect to="/dashboard"/> : <Redirect to="/login"/>}
-                        </Route>
-                        <Route exact path="/dashboard">
-                            <Dashboard Username="Jay"/>
-                        </Route>
-
-                        <Route path="/login">
-                            <Login/>
-                        </Route>
-                        <Route path="/signup">
-                            <Signup/>
-                        </Route>
-                    </div>
+                    <AuthProvider value={this.state.user}>
+                        <div className="App">
+                            <button onClick={this.handler}>handler</button>
+                            <Route exact path="/">
+                                {this.state.user ? <Redirect to="/dashboard"/> : <Redirect to="/login"/>}
+                            </Route>
+                            <Route exact path="/dashboard">
+                                <Dashboard signOutHandler={this.signOutHandler}/>
+                            </Route>
+                            <Route path="/login">
+                                <Login/>
+                            </Route>
+                            <Route path="/signup">
+                                <Signup/>
+                            </Route>
+                        </div>
+                    </AuthProvider>
                 </Router>
-
             </ThemeProvider>
         );
     }

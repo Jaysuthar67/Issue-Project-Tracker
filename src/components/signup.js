@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 6/6/2021
+ *  Created by Jay Suthar on 7/6/2021
  */
 
 import React, {Component} from 'react';
@@ -42,6 +42,7 @@ class Signup extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        // hack for Validating on focus. Too Bad
         this.emailRef.current.children[0].focus();
         this.firstName.current.children[0].focus();
         this.lastName.current.children[0].focus();
