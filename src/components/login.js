@@ -116,12 +116,14 @@ class Login extends Component {
     }
 
     componentDidMount() {
+
+    }
+
+    componentWillUnmount() {
+        this.handleSubmit = undefined;
     }
 
     render() {
-        console.log("login Rendered");
-        console.log("User from Login");
-        console.log(this.state.userCredential);
         return (
             <AuthConsumer>
                 {(val) => {

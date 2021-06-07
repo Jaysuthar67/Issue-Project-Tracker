@@ -26,7 +26,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.authStateListener =  FirebaseAuth.onAuthStateChanged((currentUser) => {
+        this.authStateListener = FirebaseAuth.onAuthStateChanged((currentUser) => {
             this.setState({
                 user: currentUser
             });
@@ -34,7 +34,6 @@ class App extends Component {
     }
 
     componentWillUnmount() {
-        // alert("App Unmount");
         this.authStateListener = undefined;
     }
 
@@ -48,6 +47,9 @@ class App extends Component {
             console.log(error);
             // An error happened.
         });
+    }
+    signUpHandler = () => {
+
     }
 
     render() {
