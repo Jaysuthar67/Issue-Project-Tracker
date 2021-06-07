@@ -8,7 +8,7 @@ import {AuthConsumer} from "./Contexts/auth";
 import {Link, Redirect} from "react-router-dom";
 import './dashboard.css'
 import {FirebaseAuth} from "../firebaseInit";
-import {AppBar, Divider, Grid, IconButton, Paper, Toolbar, Tooltip, Typography} from "@material-ui/core";
+import {AppBar, Grid, IconButton, Paper, Toolbar, Tooltip, Typography} from "@material-ui/core";
 import {AccountCircle} from "@material-ui/icons";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 

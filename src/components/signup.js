@@ -38,11 +38,19 @@ class Signup extends Component {
             emailNotValid: false,
             passwordNotValid: false,
             firstNameEmpty: false,
-            lastNameEmpty: false
+            lastNameEmpty: false,
+            signUpError: false
         }
     }
-
-    handleSubmit = (e) => {
+    signOutHandler = () => {
+        FirebaseAuth.signOut().then(() => {
+            // Sign-out successful.
+        }).catch((error) => {
+            console.log(error);
+            // An error happened.
+        });
+    }
+    handleSubmit =async (e) => {
         e.preventDefault();
         // hack for Validating on focus. Too Bad
         this.emailRef.current.children[0].focus();
@@ -61,24 +69,51 @@ class Signup extends Component {
             this.setState({
                 loading: true
             })
-            //TODO : CAll Firebase SignUp With Email_Password And Set Display_Name;
-            FirebaseAuth.createUserWithEmailAndPassword(email, password)
+            let email = this.emailRef.current.children[0].value;
+            let password = this.passwordRef.current.children[0].value;
+            let newDisplayName = this.firstName.current.children[0].value + " " + this.lastName.current.children[0].value
+            await FirebaseAuth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    var user = userCredential.user;
-
+                    let user = userCredential.user;
+                    let success = false;
+                    user.updateProfile({
+                        displayName: newDisplayName,
+                    }).then(function () {
+                        console.log("SignUp Successful");
+                        success = true;
+                    }).catch(function (error) {
+                        console.log("error in setting up User");
+                        console.log(error);
+                        success = false;
+                    });
+                    this.setState({
+                        signUpError: !success
+                    });
+                    this.signOutHandler();
                 })
                 .catch((error) => {
-                    var errorCode = error.code;
-                    var errorMessage = error.message;
-                    // ..
+                    let errorCode = error.code;
+                    if (errorCode === "auth/email-already-exists") {
+                        this.setState({
+                            signUpError: true
+                        })
+                    } else if (errorCode === "auth/email-already-in-use") {
+                        this.setState({
+                            signUpError: true
+                        })
+                    } else if (errorCode === "auth/invalid-email") {
+                        this.setState({
+                            signUpError: true
+                        })
+                    } else {
+                        alert(`Something went wrong : ${errorCode}`)
+                        console.log(error);
+                    }
                 });
-            setTimeout(() => {
-                this.setState({
-                    loading: false
-                });
-            }, 2000);
         }
     }
+
+
     handleClickShowPassword = () => {
         this.setState({
             showPassword: !this.state.showPassword
@@ -132,6 +167,11 @@ class Signup extends Component {
             });
         }
 
+    }
+
+    componentWillUnmount() {
+        this.handleSubmit = undefined;
+        this.signOutHandler = undefined;
     }
 
     render() {
@@ -206,7 +246,7 @@ class Signup extends Component {
                                                      disabled={this.state.loading}
                                                      error={this.state.passwordNotValid}>
                                             <InputLabel htmlFor="email">Confirm Password *</InputLabel>
-                                            <Input id="password"
+                                            <Input id="confirmPassword"
                                                    ref={this.passwordConfRef}
                                                    onBlur={this.validatePassword}
                                                    type={this.state.showPassword ? "text" : "password"}
@@ -215,6 +255,9 @@ class Signup extends Component {
                                                 id="my-helper-text">{this.state.passwordNotValid ? "Please enter valid Email Address" : ""}
                                             </FormHelperText>
                                         </FormControl>
+                                        {this.state.signUpError ?
+                                            <div className="signupError"> User with this E-mail id Already
+                                                Exists</div> : ""}
                                         <Button className="signup-items" disabled={this.state.loading}
                                                 type="submit" variant="contained"
                                                 size="large" color="primary">

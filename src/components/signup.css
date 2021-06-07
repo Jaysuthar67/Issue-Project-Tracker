@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 5/6/2021
+ *  Created by Jay Suthar on 8/6/2021
  */
 
 .signup-container {
@@ -62,4 +62,10 @@
 .lastName {
     width: 100%;
     margin: 0.2rem !important;
+}
+.signupError{
+    font-family: "Roboto Light", sans-serif;
+    color:var(--error-main);
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
 }
