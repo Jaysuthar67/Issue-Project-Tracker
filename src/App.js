@@ -25,8 +25,6 @@ class App extends Component {
         }
     }
 
-
-
     componentDidMount() {
         this.authStateListener =  FirebaseAuth.onAuthStateChanged((currentUser) => {
             this.setState({
