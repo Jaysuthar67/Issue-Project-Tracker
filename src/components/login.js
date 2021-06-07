@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 7/6/2021
+ *  Created by Jay Suthar on 8/6/2021
  */
 
 import React, {Component} from 'react';
@@ -129,14 +129,14 @@ class Login extends Component {
                 {(val) => {
                     if (val) {
                         return (
-                            <Redirect to="/dashboard"/>
+                            <Redirect to="/"/>
                         );
                     } else {
                         return (
                             <div className="login-container">
                                 <Paper elevation={3} className="w-100 login-Paper">
                                     {this.state.loading ? <LinearProgress className="w-100"/> : ""}
-                                    {/*TODO Setup wrong password alert*/}
+
                                     <div className="login-form-Logo"><img src={logo} alt="logo"/></div>
                                     <Typography variant="h3">
                                         Login
@@ -201,20 +201,3 @@ class Login extends Component {
 }
 
 export default Login;
-
-// let errorCode = error.code;
-// if (errorCode === 'auth/user-not-found') {
-//     this.setState({
-//         signInError: true
-//     });
-// } else if (errorCode === 'auth/invalid-email') {
-//     this.setState({
-//         signInError: true
-//     });
-// } else if (errorCode === 'auth/wrong-password') {
-//     this.setState({
-//         signInError: true
-//     });
-// } else {
-//     console.log(errorCode);
-// }

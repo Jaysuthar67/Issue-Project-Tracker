@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 7/6/2021
+ *  Created by Jay Suthar on 8/6/2021
  */
 
 import './App.css';
@@ -14,6 +14,7 @@ import Signup from "./components/signup";
 import {AuthProvider} from "./components/Contexts/auth";
 import "firebase/auth";
 import {FirebaseAuth} from "./firebaseInit";
+import UserProfile from "./components/userProfile";
 
 class App extends Component {
     authStateListener;
@@ -24,6 +25,7 @@ class App extends Component {
             user: null
         }
     }
+
 
     componentDidMount() {
         this.authStateListener = FirebaseAuth.onAuthStateChanged((currentUser) => {
@@ -40,17 +42,6 @@ class App extends Component {
     handler = () => {
         console.log("handlerCalled");
     }
-    signOutHandler = () => {
-        FirebaseAuth.signOut().then(() => {
-            // Sign-out successful.
-        }).catch((error) => {
-            console.log(error);
-            // An error happened.
-        });
-    }
-    signUpHandler = () => {
-
-    }
 
     render() {
         const theme = createMuiTheme(muiThemeConfig)
@@ -59,12 +50,11 @@ class App extends Component {
                 <Router>
                     <AuthProvider value={this.state.user}>
                         <div className="App">
-                            <button onClick={this.handler}>handler</button>
                             <Route exact path="/">
                                 {this.state.user ? <Redirect to="/dashboard"/> : <Redirect to="/login"/>}
                             </Route>
                             <Route exact path="/dashboard">
-                                <Dashboard signOutHandler={this.signOutHandler}/>
+                                <Dashboard parentHandler={this.handler}/>
                             </Route>
                             <Route path="/login">
                                 <Login/>
@@ -72,7 +62,11 @@ class App extends Component {
                             <Route path="/signup">
                                 <Signup/>
                             </Route>
+                            <Route path="/profile">
+                                <UserProfile/>
+                            </Route>
                         </div>
+
                     </AuthProvider>
                 </Router>
             </ThemeProvider>

@@ -1,8 +1,58 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 7/6/2021
+ *  Created by Jay Suthar on 8/6/2021
  */
 
-.dashboard-Container{
+.dashboard-Container {
     color: #ffffff;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    overflow-y: hidden;
+}
+
+.appbar-left {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.appbar-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 50%;
+    height: 100%;
+}
+
+.appbar-logo {
+    transform: scale(0.7);
+    margin-right: 0.5rem;
+}
+
+.mainApp-Container {
+    height: 100%;
+}
+
+.h-100 {
+    height: 100% !important;
+}
+
+.projects-Container {
+
+    height: 100%;
+    border-right: 0.1rem solid var(--background-light);
+    padding: 0.5rem;
+}
+
+.issue-Container {
+    border-right: 0.1rem solid var(--background-light);
+    padding: 0.5rem;
+}
+
+.active-Element {
+    height: 100%;
+    padding: 0.5rem;
+
 }
