@@ -5,7 +5,7 @@
 
 import './App.css';
 import React, {Component} from 'react';
-import {createMuiTheme, ThemeProvider} from "@material-ui/core";
+import {createMuiTheme, LinearProgress, ThemeProvider} from "@material-ui/core";
 import muiThemeConfig from "./components/muiThemeConfig";
 import Dashboard from "./components/dashboard";
 import {BrowserRouter as Router, Redirect, Route} from "react-router-dom";
@@ -22,7 +22,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: null
+            user: null,
+            appLoading: true
         }
     }
 
@@ -30,7 +31,8 @@ class App extends Component {
     componentDidMount() {
         this.authStateListener = FirebaseAuth.onAuthStateChanged((currentUser) => {
             this.setState({
-                user: currentUser
+                user: currentUser,
+                appLoading:false
             });
         });
     }
@@ -45,33 +47,42 @@ class App extends Component {
 
     render() {
         const theme = createMuiTheme(muiThemeConfig)
-        return (
-            <ThemeProvider theme={theme}>
-                <Router>
-                    <AuthProvider value={this.state.user}>
-                        <div className="App">
-                            <Route exact path="/">
-                                {this.state.user ? <Redirect to="/dashboard"/> : <Redirect to="/login"/>}
-                            </Route>
-                            <Route exact path="/dashboard">
-                                <Dashboard parentHandler={this.handler}/>
-                            </Route>
-                            <Route path="/login">
-                                <Login/>
-                            </Route>
-                            <Route path="/signup">
-                                <Signup/>
-                            </Route>
-                            <Route path="/profile">
-                                <UserProfile/>
-                            </Route>
-                        </div>
+        if (this.state.appLoading) {
+            return (
+                <ThemeProvider theme={theme}>
+                    <div className="appLoading">Please Wait Loading ...<LinearProgress className="appLoading-Progress"/></div>
+                </ThemeProvider>
+            );
+        } else {
+            return (
+                <ThemeProvider theme={theme}>
+                    <Router>
+                        <AuthProvider value={this.state.user}>
+                            <div className="App">
+                                <Route exact path="/">
+                                    {this.state.user ? <Redirect to="/dashboard"/> : <Redirect to="/login"/>}
+                                </Route>
+                                <Route exact path="/dashboard">
+                                    <Dashboard parentHandler={this.handler}/>
+                                </Route>
+                                <Route path="/login">
+                                    <Login/>
+                                </Route>
+                                <Route path="/signup">
+                                    <Signup/>
+                                </Route>
+                                <Route path="/profile">
+                                    <UserProfile/>
+                                </Route>
+                            </div>
 
-                    </AuthProvider>
-                </Router>
-            </ThemeProvider>
-        );
+                        </AuthProvider>
+                    </Router>
+                </ThemeProvider>
+            );
+        }
     }
+
 }
 
 export default App;

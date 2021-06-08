@@ -49,7 +49,7 @@
 
 .Signup-link-parent a {
     font-family: "Roboto", sans-serif;
-    color: hsl(167, 37%, 44%);
+    color:var(--primary-light);
 }
 .loginError{
     font-family: "Roboto Light", sans-serif;

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 5/6/2021
+ *  Created by Jay Suthar on 8/6/2021
  */
 
 .App {
@@ -12,4 +12,21 @@
   height: 100vh;
   width: 100%;
   /*overflow: hidden;*/
+}
+.appLoading{
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--primary-light);
+  font-family: "Roboto Light", sans-serif;
+  font-size: 2rem;
+  text-align: center;
+}
+.appLoading-Progress{
+  margin-top: 1rem;
+  width: 90%;
+  max-width: 450px;
 }

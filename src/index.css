@@ -9,6 +9,7 @@
     --background: hsl(0, 0%, 24%);
     --background-dark: hsl(0, 0%, 10%);
     --primary-main: hsl(167, 36%, 35%);
+    --primary-light: hsl(167, 37%, 44%);
     --secondary-main: hsl(6, 78%, 57%);
     --divider: rgba(255, 255, 255, 0.31);
     --error-main: hsl(4, 90%, 58%);

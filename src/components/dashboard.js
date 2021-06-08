@@ -8,11 +8,18 @@ import {AuthConsumer} from "./Contexts/auth";
 import {Link, Redirect} from "react-router-dom";
 import './dashboard.css'
 import {FirebaseAuth} from "../firebaseInit";
-import {AppBar, Grid, IconButton, Paper, Toolbar, Tooltip, Typography} from "@material-ui/core";
+import {AppBar, Grid, IconButton, LinearProgress, Paper, Toolbar, Tooltip, Typography} from "@material-ui/core";
 import {AccountCircle} from "@material-ui/icons";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 class Dashboard extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataLoading: true
+        }
+    }
 
     sendPasswordReset = () => {
         let currentEmail = FirebaseAuth.currentUser.email;
@@ -29,6 +36,10 @@ class Dashboard extends Component {
             console.log(error);
             // An error happened.
         });
+    }
+
+    componentDidMount() {
+
     }
 
     componentWillUnmount() {
@@ -72,6 +83,7 @@ class Dashboard extends Component {
                                     </Paper>
                                 </AppBar>
                                 {/* -------------------- AppBar --------------------*/}
+                                {this.state.dataLoading ? <LinearProgress/> : <div/>}
                                 <div className="mainApp-Container">
                                     <Grid className="h-100" container spacing={0}>
                                         <Grid className="projects-Container" item xs={3}>
@@ -99,5 +111,4 @@ class Dashboard extends Component {
         );
     }
 }
-
 export default Dashboard;
