@@ -1,23 +1,30 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 8/6/2021
+ *  Created by Jay Suthar on 9/6/2021
  */
 import logo from '../assets/AppIcon.svg';
 import React, {Component} from 'react';
-import {AuthConsumer} from "./Contexts/auth";
+import AuthContext, {AuthConsumer} from "./Contexts/auth";
 import {Link, Redirect} from "react-router-dom";
 import './dashboard.css'
-import {FirebaseAuth} from "../firebaseInit";
-import {AppBar, Grid, IconButton, LinearProgress, Paper, Toolbar, Tooltip, Typography} from "@material-ui/core";
+import {FirebaseAuth, Firestore} from "../firebaseInit";
+import {AppBar, Button, Grid, IconButton, LinearProgress, Paper, Toolbar, Tooltip, Typography} from "@material-ui/core";
 import {AccountCircle} from "@material-ui/icons";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {DataProvider} from "./Contexts/data";
+import AddIcon from '@material-ui/icons/Add';
+import ProjectsDisplay from "./dashboardComponents/projectsDisplay";
 
 class Dashboard extends Component {
+
+    firebaseRealtimeListener;
+    registerfirebaseRealtimeListener;
 
     constructor(props) {
         super(props);
         this.state = {
-            dataLoading: true
+            dataLoading: true,
+            data: null
         }
     }
 
@@ -29,9 +36,11 @@ class Dashboard extends Component {
         }).catch(function (error) {
         });
     }
+
     signOutHandler = () => {
         FirebaseAuth.signOut().then(() => {
             // Sign-out successful.
+            this.firebaseRealtimeListener = undefined;
         }).catch((error) => {
             console.log(error);
             // An error happened.
@@ -39,12 +48,28 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
+        this.firebaseRealtimeListener = Firestore.collection("test_colloection")
+            .where("users", "array-contains", this.context.uid)
+            .onSnapshot((querySnapshot) => {
+                let dataObject = [];
+                querySnapshot.forEach((doc) => {
+                    let singleObject = {
+                        [doc.id]: [doc.data()]
+                    }
+                    dataObject.push(singleObject);
+                });
 
+                this.setState({
+                    dataLoading: false,
+                    data: dataObject
+                });
+            });
     }
 
     componentWillUnmount() {
         this.signOutHandler = undefined;
         this.sendPasswordReset = undefined;
+        this.firebaseRealtimeListener = undefined;
     }
 
     render() {
@@ -84,21 +109,27 @@ class Dashboard extends Component {
                                 </AppBar>
                                 {/* -------------------- AppBar --------------------*/}
                                 {this.state.dataLoading ? <LinearProgress/> : <div/>}
-                                <div className="mainApp-Container">
-                                    <Grid className="h-100" container spacing={0}>
-                                        <Grid className="projects-Container" item xs={3}>
-                                            Projects
+                                <DataProvider value={this.state.data}>
+                                    <div className="mainApp-Container">
+                                        <Grid className="h-100" container spacing={0}>
+                                            <Grid className="projects-Container custom-Scrollbar" item xs={3}>
+                                                <div className="new-Project-container">
+                                                    <Button className="new-Project-button" variant="contained"
+                                                            color="primary" size="small"
+                                                            startIcon={<AddIcon/>}>New Project</Button></div>
+
+                                                {!this.state.dataLoading ? <ProjectsDisplay/> : ""}
+                                            </Grid>
+                                            <Grid className="issue-Container" item xs={3}>
+                                                Issues
+                                            </Grid>
+                                            <Grid className="active-Element" item xs={6}>
+                                                Active Element
+                                            </Grid>
                                         </Grid>
-                                        {/*<Divider orientation="vertical" flexItem/>*/}
-                                        <Grid className="issue-Container" item xs={3}>
-                                            Issues
-                                        </Grid>
-                                        {/*<Divider orientation="vertical" flexItem/>*/}
-                                        <Grid className="active-Element" item xs={6}>
-                                            Active Element
-                                        </Grid>
-                                    </Grid>
-                                </div>
+                                        <div className="my-Name">Designed & Developed by Jay Suthar</div>
+                                    </div>
+                                </DataProvider>
                             </div>
                         );
                     } else {
@@ -111,4 +142,6 @@ class Dashboard extends Component {
         );
     }
 }
+
+Dashboard.contextType = AuthContext;
 export default Dashboard;

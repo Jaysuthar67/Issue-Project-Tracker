@@ -24,3 +24,4 @@ yarn-error.log*
 firebaseConfig.js
 /.firebaserc
 /firebase-debug.log
+/src/dataSchema.json
