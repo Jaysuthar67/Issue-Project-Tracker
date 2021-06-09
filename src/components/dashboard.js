@@ -18,7 +18,6 @@ import ProjectsDisplay from "./dashboardComponents/projectsDisplay";
 class Dashboard extends Component {
 
     firebaseRealtimeListener;
-    registerfirebaseRealtimeListener;
 
     constructor(props) {
         super(props);
@@ -26,15 +25,6 @@ class Dashboard extends Component {
             dataLoading: true,
             data: null
         }
-    }
-
-    sendPasswordReset = () => {
-        let currentEmail = FirebaseAuth.currentUser.email;
-        FirebaseAuth.sendPasswordResetEmail(currentEmail).then(() => {
-            alert(`Password Reset Link Was Sent to :\n${currentEmail}`);
-            this.props.signOutHandler();
-        }).catch(function (error) {
-        });
     }
 
     signOutHandler = () => {
@@ -58,17 +48,21 @@ class Dashboard extends Component {
                     }
                     dataObject.push(singleObject);
                 });
-
-                this.setState({
-                    dataLoading: false,
-                    data: dataObject
-                });
+                if (dataObject.length !== 0) {
+                    this.setState({
+                        dataLoading: false,
+                        data: dataObject
+                    });
+                } else {
+                    this.setState({
+                        data: dataObject
+                    });
+                }
             });
     }
 
     componentWillUnmount() {
         this.signOutHandler = undefined;
-        this.sendPasswordReset = undefined;
         this.firebaseRealtimeListener = undefined;
     }
 
@@ -117,8 +111,8 @@ class Dashboard extends Component {
                                                     <Button className="new-Project-button" variant="contained"
                                                             color="primary" size="small"
                                                             startIcon={<AddIcon/>}>New Project</Button></div>
-
-                                                {!this.state.dataLoading ? <ProjectsDisplay/> : ""}
+                                                {!this.state.dataLoading ? <ProjectsDisplay/> :
+                                                    <div>No Projects Found</div>}
                                             </Grid>
                                             <Grid className="issue-Container" item xs={3}>
                                                 Issues
