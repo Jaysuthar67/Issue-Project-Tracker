@@ -1,0 +1,58 @@
+/*
+ * Copyright (c) 2021. All Rights Reserved
+ *  Created by Jay Suthar on 10/6/2021
+ */
+
+.issuesDisplayContainer {
+    height: 85vh;
+    width: 100%;
+}
+
+.issues-filter-Area {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-bottom-width: 0.1rem;
+    border-bottom-style: solid;
+    border-bottom-color: var(--background-light);
+}
+
+.issues-search {
+    flex-grow: 1;
+    height: 70%;
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding-left: 0.5rem;
+    border-radius: 4px;
+}
+
+.issues-search:hover {
+    background-color: var(--background-light);
+}
+
+.issues-search:focus-within {
+    background-color: var(--background);
+}
+
+.issues-search-input {
+    height: 100%;
+    margin-left: 0.5rem;
+}
+
+.issueItemsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 74vh;
+    padding-top: 1ch;
+    overflow-y: auto;
+}
+
+.issuesListPlaceholder {
+    height: 6vh;
+    width: 100%;
+}
+

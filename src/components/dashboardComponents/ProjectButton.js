@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 9/6/2021
+ *  Created by Jay Suthar on 10/6/2021
  */
 
 import React from 'react';
@@ -11,7 +11,7 @@ import AddIcon from "@material-ui/icons/Add";
 function ProjectButton(props) {
     return (
         <div className="projectButton-Container">
-            <ButtonBase className="project-buttonBase">
+            <ButtonBase className="project-buttonBase" onClick={()=>props.selectProjectHandler(props.projectID)}>
                 <div className="buttonContent">{props.projectTitle}</div>
             </ButtonBase>
             <Tooltip title="No. Of Issues">

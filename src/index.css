@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 9/6/2021
+ *  Created by Jay Suthar on 10/6/2021
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
@@ -14,6 +14,8 @@
     --secondary-trasnsparnt: hsla(6, 78%, 57%, 0.55);
     --divider: rgba(255, 255, 255, 0.31);
     --error-main: hsl(4, 90%, 58%);
+    --light-text: hsl(0, 0%, 82%);
+    --high-priority: hsl(203, 61%, 50%);
 }
 *{
     margin: 0;

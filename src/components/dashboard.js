@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 9/6/2021
+ *  Created by Jay Suthar on 10/6/2021
  */
 import logo from '../assets/AppIcon.svg';
 import React, {Component} from 'react';
@@ -14,6 +14,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {DataProvider} from "./Contexts/data";
 import AddIcon from '@material-ui/icons/Add';
 import ProjectsDisplay from "./dashboardComponents/projectsDisplay";
+import IssuesDisplay from "./dashboardComponents/issuesDisplay";
 
 class Dashboard extends Component {
 
@@ -23,7 +24,12 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             dataLoading: true,
-            data: null
+            data: null,
+            selectedItem:{
+                itemType:"project",
+                projectId:null,
+                issueId:null
+            }
         }
     }
 
@@ -48,16 +54,10 @@ class Dashboard extends Component {
                     }
                     dataObject.push(singleObject);
                 });
-                if (dataObject.length !== 0) {
-                    this.setState({
-                        dataLoading: false,
-                        data: dataObject
-                    });
-                } else {
-                    this.setState({
-                        data: dataObject
-                    });
-                }
+                this.setState({
+                    dataLoading: false,
+                    data: dataObject
+                });
             });
     }
 
@@ -65,7 +65,15 @@ class Dashboard extends Component {
         this.signOutHandler = undefined;
         this.firebaseRealtimeListener = undefined;
     }
-
+    selectProjectHandler = (projectId)=>{
+        this.setState({
+            selectedItem:{
+                itemType:"project",
+                projectId:[projectId],
+                issueId:null
+            }
+        })
+    }
     render() {
         return (
             <AuthConsumer>
@@ -111,18 +119,19 @@ class Dashboard extends Component {
                                                     <Button className="new-Project-button" variant="contained"
                                                             color="primary" size="small"
                                                             startIcon={<AddIcon/>}>New Project</Button></div>
-                                                {!this.state.dataLoading ? <ProjectsDisplay/> :
-                                                    <div>No Projects Found</div>}
+                                                {!this.state.dataLoading ? <ProjectsDisplay selectProjectHandler={this.selectProjectHandler}/> :
+                                                    <></>}
                                             </Grid>
                                             <Grid className="issue-Container" item xs={3}>
-                                                Issues
+                                                {!this.state.dataLoading ? <IssuesDisplay selectedItem={this.state.selectedItem}/> :
+                                                    <></>}
                                             </Grid>
                                             <Grid className="active-Element" item xs={6}>
                                                 Active Element
                                             </Grid>
                                         </Grid>
-                                        <div className="my-Name">Designed & Developed by Jay Suthar</div>
                                     </div>
+                                    <div className="my-Name">Designed & Developed by Jay Suthar</div>
                                 </DataProvider>
                             </div>
                         );

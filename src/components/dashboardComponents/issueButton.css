@@ -1,0 +1,98 @@
+/*
+ * Copyright (c) 2021. All Rights Reserved
+ *  Created by Jay Suthar on 10/6/2021
+ */
+
+.issueButton-Container-Urgent{
+    border-radius: 5px!important;
+    width: 95%;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    border: 0.2rem solid var(--secondary-main)!important;
+}
+.issueButton-Title-Urgent {
+    flex-grow: 2;
+    width: 100%;
+    text-align: justify;
+    font-size:24px;
+    color: var(--secondary-main);
+}
+
+.issueButton-Container-High{
+    border-radius: 5px!important;
+    width: 95%;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    border: 0.2rem solid var(--high-priority)!important;
+}
+.issueButton-Title-High {
+    flex-grow: 2;
+    width: 100%;
+    text-align: justify;
+    font-size:24px;
+    color: var(--high-priority);
+}
+
+.issueButton-Container-Normal{
+    border-radius: 5px!important;
+    width: 95%;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+    border: 0.2rem solid var(--background-light)!important;
+}
+.issueButton-Title-Normal {
+    flex-grow: 2;
+    width: 100%;
+    text-align: justify;
+    font-size:24px;
+}
+
+.issueButton-Container-Low{
+    border-radius: 5px!important;
+    width: 95%;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+.issueButton-Title-Low {
+    flex-grow: 2;
+    width: 100%;
+    text-align: justify;
+    font-size:20px;
+    color: var(--light-text);
+}
+.issueButton-Description-Low {
+    flex-grow: 3;
+    width: 100%;
+    text-align: justify;
+    color: var(--light-text);
+    overflow: hidden;
+}
+
+.issueButton-InnerDiv {
+    height: 6rem;
+    width: 100%;
+    display: flex;
+    background-color: var(--background);
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-bottom: -5px;
+}
+.issueButton-Description {
+    flex-grow: 3;
+    width: 100%;
+    text-align: justify;
+    overflow: hidden;
+}
+.issueButton-issueCreatedOn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-grow: 2;
+    font-family: "Roboto Light", sans-serif;
+    font-style: italic;
+    font-size: 0.7rem;
+    color: var(--light-text);
+}

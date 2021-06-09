@@ -1,7 +1,11 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 9/6/2021
+ *  Created by Jay Suthar on 10/6/2021
  */
 .projectsDisplayContainer{
 
+}
+.projectsListPlaceHolder{
+    height: 6vh;
+    width: 100%;
 }

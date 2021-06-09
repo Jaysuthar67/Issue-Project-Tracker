@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 8/6/2021
+ *  Created by Jay Suthar on 10/6/2021
  */
 
 import './App.css';
@@ -23,7 +23,8 @@ class App extends Component {
         super(props);
         this.state = {
             user: null,
-            appLoading: true
+            appLoading: true,
+
         }
     }
 

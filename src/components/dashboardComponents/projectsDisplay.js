@@ -1,11 +1,12 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 9/6/2021
+ *  Created by Jay Suthar on 10/6/2021
  */
 import React, {Component} from 'react';
 import './projectDisplay.css'
 import {DataConsumer} from "../Contexts/data";
 import ProjectButton from "./ProjectButton";
+import {Tooltip} from "@material-ui/core";
 
 class ProjectsDisplay extends Component {
 
@@ -14,7 +15,7 @@ class ProjectsDisplay extends Component {
             <div className="projectsDisplayContainer">
                 <DataConsumer>
                     {(value) => {
-                        if (value) {
+                        if (value.length !== 0) {
                             let projects = value.map((val) => {
                                 let projectID = Object.keys(val)[0];
                                 let projectTitle = val[projectID][0].title;
@@ -23,7 +24,6 @@ class ProjectsDisplay extends Component {
                                     let issuesKeys = Object.keys(val[projectID][0].issues);
                                     issueCount = issuesKeys.length;
                                 }
-
                                 return {
                                     projectID: [projectID],
                                     projectTitle: [projectTitle],
@@ -45,15 +45,20 @@ class ProjectsDisplay extends Component {
                             });
                             let projectRender = projects.map(project => <ProjectButton
                                 key={project.projectID} projectTitle={project.projectTitle}
+                                selectProjectHandler={this.props.selectProjectHandler}
                                 issueCount={project.issueCount} projectID={project.projectID}
                             />);
-                            return (projectRender);
-                        }else {
+                            return (
+                                <>{projectRender}
+                                    <div className="projectsListPlaceHolder">  </div>
+                                </>
+                            );
+                        } else {
                             console.log("No projects Found for Current User");
                             return (
-                                <div>
-                                    No Projects Found
-                                </div>
+                                <Tooltip title="It looks like you don't have any Project Yet">
+                                    <div className="no-projects-found">No Projects Found</div>
+                                </Tooltip>
                             );
                         }
                     }}
