@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 8/6/2021
+ *  Created by Jay Suthar on 11/6/2021
  */
 
 import React, {Component} from 'react';
@@ -49,8 +49,8 @@ class Login extends Component {
             this.setState({
                 loading: true
             });
-            let email = this.emailRef.current.children[0].value
-            let password = this.passwordRef.current.children[0].value
+            let email = this.emailRef.current.children[0].value;
+            let password = this.passwordRef.current.children[0].value;
             await FirebaseAuth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     this.setState({

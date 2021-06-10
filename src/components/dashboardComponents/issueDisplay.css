@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 10/6/2021
+ *  Created by Jay Suthar on 11/6/2021
  */
 
 .issuesDisplayContainer {
@@ -19,16 +19,24 @@
 }
 
 .issues-search {
-    flex-grow: 1;
+    /*flex-grow: 1;*/
     height: 70%;
     display: flex;
+    flex-grow: 2;
     align-items: center;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     padding-left: 0.5rem;
     border-radius: 4px;
 }
-
+.issues-Filter-Button{
+    height: 70%;
+    flex-grow: 1;
+    align-items: center;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding-left: 0.5rem;
+}
 .issues-search:hover {
     background-color: var(--background-light);
 }

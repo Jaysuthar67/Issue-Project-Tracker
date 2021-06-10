@@ -1,34 +1,47 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 10/6/2021
+ *  Created by Jay Suthar on 11/6/2021
  */
 import logo from '../assets/AppIcon.svg';
 import React, {Component} from 'react';
 import AuthContext, {AuthConsumer} from "./Contexts/auth";
-import {Link, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import './dashboard.css'
 import {FirebaseAuth, Firestore} from "../firebaseInit";
-import {AppBar, Button, Grid, IconButton, LinearProgress, Paper, Toolbar, Tooltip, Typography} from "@material-ui/core";
-import {AccountCircle} from "@material-ui/icons";
+import {
+    AppBar,
+    Button,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Menu,
+    MenuItem,
+    Paper,
+    Toolbar,
+    Tooltip,
+    Typography
+} from "@material-ui/core";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {DataProvider} from "./Contexts/data";
 import AddIcon from '@material-ui/icons/Add';
 import ProjectsDisplay from "./dashboardComponents/projectsDisplay";
 import IssuesDisplay from "./dashboardComponents/issuesDisplay";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ActiveElement from "./dashboardComponents/activeElement";
 
 class Dashboard extends Component {
 
     firebaseRealtimeListener;
-
     constructor(props) {
         super(props);
         this.state = {
             dataLoading: true,
             data: null,
-            selectedItem:{
-                itemType:"project",
-                projectId:null,
-                issueId:null
+            userMenuButtonAnchor: null,
+            selectedItem: {
+                itemType: null,
+                projectId: null,
+                issueId: null
             }
         }
     }
@@ -42,10 +55,32 @@ class Dashboard extends Component {
             // An error happened.
         });
     }
+    userMenuOpenHandler = (e) => {
+        this.setState({
+            userMenuButtonAnchor: e.target
+        });
+    }
+    userMenuCloseHandler = () => {
+        this.setState({
+            userMenuButtonAnchor: null
+        });
+    }
+    passwordResetHandler = () => {
+        FirebaseAuth.sendPasswordResetEmail(this.context.email)
+            .then(() => {
+                alert(`Password Reset Link was sent to : \n ${this.context.email}`);
+                this.setState({
+                    userMenuButtonAnchor: null
+                })
+            }).catch((err) => {
+            console.log(err);
+            alert("Something Went Wrong !")
+        });
+    }
 
     componentDidMount() {
         this.firebaseRealtimeListener = Firestore.collection("test_colloection")
-            .where("users", "array-contains", this.context.uid)
+            .where("users", "array-contains", this.context.email)
             .onSnapshot((querySnapshot) => {
                 let dataObject = [];
                 querySnapshot.forEach((doc) => {
@@ -63,17 +98,22 @@ class Dashboard extends Component {
 
     componentWillUnmount() {
         this.signOutHandler = undefined;
+        this.userMenuOpenHandler = undefined;
+        this.userMenuCloseHandler = undefined;
+        this.passwordResetHandler = undefined;
         this.firebaseRealtimeListener = undefined;
     }
-    selectProjectHandler = (projectId)=>{
+
+    selectProjectHandler = (projectId) => {
         this.setState({
-            selectedItem:{
-                itemType:"project",
-                projectId:[projectId],
-                issueId:null
+            selectedItem: {
+                itemType: "project",
+                projectId: [projectId],
+                issueId: null
             }
         })
     }
+
     render() {
         return (
             <AuthConsumer>
@@ -93,13 +133,14 @@ class Dashboard extends Component {
                                             </div>
                                             <div className="appbar-right">
                                                 <div className="userName">Welcome, {val.displayName}</div>
-                                                <Link to="/profile">
-                                                    <Tooltip title="User Profile">
-                                                        <IconButton>
-                                                            <AccountCircle/>
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </Link>
+                                                <IconButton onClick={this.userMenuOpenHandler}>
+                                                    <MoreVertIcon/>
+                                                </IconButton>
+                                                <Menu anchorEl={this.state.userMenuButtonAnchor}
+                                                      keepMounted open={Boolean(this.state.userMenuButtonAnchor)} onClose={this.userMenuCloseHandler}>
+                                                    <MenuItem onClick={this.passwordResetHandler}>Reset Password</MenuItem>
+                                                    <MenuItem onClick={this.signOutHandler}>Logout</MenuItem>
+                                                </Menu>
                                                 <Tooltip title="Logout">
                                                     <IconButton onClick={this.signOutHandler}>
                                                         <ExitToAppIcon/>
@@ -119,15 +160,19 @@ class Dashboard extends Component {
                                                     <Button className="new-Project-button" variant="contained"
                                                             color="primary" size="small"
                                                             startIcon={<AddIcon/>}>New Project</Button></div>
-                                                {!this.state.dataLoading ? <ProjectsDisplay selectProjectHandler={this.selectProjectHandler}/> :
+                                                {!this.state.dataLoading ? <ProjectsDisplay
+                                                        selectProjectHandler={this.selectProjectHandler}/> :
                                                     <></>}
                                             </Grid>
                                             <Grid className="issue-Container" item xs={3}>
-                                                {!this.state.dataLoading ? <IssuesDisplay selectedItem={this.state.selectedItem}/> :
+                                                {!this.state.dataLoading ?
+                                                    <IssuesDisplay selectedItem={this.state.selectedItem}/> :
                                                     <></>}
                                             </Grid>
                                             <Grid className="active-Element" item xs={6}>
-                                                Active Element
+                                                {!this.state.dataLoading ?
+                                                    <ActiveElement selectedItem={this.state.selectedItem}/> :
+                                                    <></>}
                                             </Grid>
                                         </Grid>
                                     </div>

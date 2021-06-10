@@ -1,28 +1,60 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 10/6/2021
+ *  Created by Jay Suthar on 11/6/2021
  */
 import React, {Component} from 'react';
 import './issueDisplay.css'
-import {InputBase} from "@material-ui/core";
+import {ButtonBase, InputBase, Menu, MenuItem} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import DataContext, {DataConsumer} from "../Contexts/data";
 import IssueButton from "./issueButton";
+import FilterListRoundedIcon from '@material-ui/icons/FilterListRounded';
 
 class IssuesDisplay extends Component {
+    searchInputRef;
+
     constructor(props) {
         super(props);
+        this.searchInputRef = React.createRef();
         this.state = {
             search: false,
-            searchTerm: null
+            searchTerm: null,
+            filterMenuAnchor: null
         }
         // let value = this.context;
 
     }
 
+    filterMenuOpenHandler = (e) => {
+        this.setState({
+            filterMenuAnchor: e.target
+        });
+    }
+    onFilterUrgentHandler = () => {
+        this.searchInputRef.current.children[0].value = "urgent"
+        this.setState({
+            search: true,
+            searchTerm: "urgent",
+            filterMenuAnchor: null
+        });
+    }
+    onFilterFinishedHandler = () => {
+        this.searchInputRef.current.children[0].value = "finished"
+        this.setState({
+            search: true,
+            searchTerm: "finished",
+            filterMenuAnchor: null
+        });
+    }
+    filterMenuCloseHandler = () => {
+        this.setState({
+            filterMenuAnchor: null
+        });
+    }
+
     issuesSearchHandler = (e) => {
+        console.log(this.searchInputRef.current.children[0].value);
         if (e.target.value) {
-            console.log(e.target.value);
             this.setState({
                 search: true,
                 searchTerm: e.target.value
@@ -33,6 +65,11 @@ class IssuesDisplay extends Component {
                 searchTerm: null
             })
         }
+    }
+
+    componentWillUnmount() {
+        this.onFilterFinishedHandler = undefined;
+        this.issuesSearchHandler = undefined;
     }
 
     render() {
@@ -57,8 +94,17 @@ class IssuesDisplay extends Component {
                     <div className="issues-search">
                         <SearchIcon/>
                         <InputBase className="issues-search-input" onChange={this.issuesSearchHandler}
-                                   placeholder="Search…"/>
+                                   placeholder="Search…" ref={this.searchInputRef}/>
                     </div>
+                    <ButtonBase className="issues-Filter-Button" onClick={this.filterMenuOpenHandler}>
+                        <FilterListRoundedIcon/>
+                    </ButtonBase>
+                    <Menu anchorEl={this.state.filterMenuAnchor}
+                          keepMounted open={Boolean(this.state.filterMenuAnchor)}
+                          onClose={this.onFilterFinishedHandler}>
+                        <MenuItem onClick={this.onFilterUrgentHandler}>Urgent</MenuItem>
+                        <MenuItem onClick={this.onFilterFinishedHandler}>Finished</MenuItem>
+                    </Menu>
                 </div>
                 <div className="issueItemsContainer custom-Scrollbar">
                     <DataConsumer>
@@ -78,10 +124,16 @@ class IssuesDisplay extends Component {
                                             issue_priority: issue_priority,
                                             issue_description: issue_description,
                                         }
-                                        if (issue_title.toLowerCase().includes(this.state.searchTerm.toLowerCase())) {
+                                        if (this.state.searchTerm.toLowerCase() === "finished") {
+                                            if (issues[issueId].issue_lifecycle === "finished") {
+                                                newIssues.push(singleIssue);
+                                            }
+                                        } else if (this.state.searchTerm.toLowerCase() === "urgent") {
+                                            if (issues[issueId].issue_priority === "urgent") {
+                                                newIssues.push(singleIssue);
+                                            }
+                                        } else if (issue_title.toLowerCase().includes(this.state.searchTerm.toLowerCase())) {
                                             newIssues.push(singleIssue);
-                                        } else {
-                                            continue;
                                         }
                                     }
                                 } else {
@@ -97,7 +149,9 @@ class IssuesDisplay extends Component {
                                             issue_priority: issue_priority,
                                             issue_description: issue_description,
                                         }
-                                        newIssues.push(singleIssue);
+                                        if (issues[issueId].issue_lifecycle !== "finished") {
+                                            newIssues.push(singleIssue);
+                                        }
                                     }
                                 }
                                 newIssues.sort(function (a, b) {

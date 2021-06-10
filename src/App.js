@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 10/6/2021
+ *  Created by Jay Suthar on 11/6/2021
  */
 
 import './App.css';
@@ -14,7 +14,6 @@ import Signup from "./components/signup";
 import {AuthProvider} from "./components/Contexts/auth";
 import "firebase/auth";
 import {FirebaseAuth} from "./firebaseInit";
-import UserProfile from "./components/userProfile";
 
 class App extends Component {
     authStateListener;
@@ -33,7 +32,7 @@ class App extends Component {
         this.authStateListener = FirebaseAuth.onAuthStateChanged((currentUser) => {
             this.setState({
                 user: currentUser,
-                appLoading:false
+                appLoading: false
             });
         });
     }
@@ -51,7 +50,8 @@ class App extends Component {
         if (this.state.appLoading) {
             return (
                 <ThemeProvider theme={theme}>
-                    <div className="appLoading">Please Wait Loading ...<LinearProgress className="appLoading-Progress"/></div>
+                    <div className="appLoading">Please Wait Loading ...<LinearProgress className="appLoading-Progress"/>
+                    </div>
                 </ThemeProvider>
             );
         } else {
@@ -71,9 +71,6 @@ class App extends Component {
                                 </Route>
                                 <Route path="/signup">
                                     <Signup/>
-                                </Route>
-                                <Route path="/profile">
-                                    <UserProfile/>
                                 </Route>
                             </div>
 

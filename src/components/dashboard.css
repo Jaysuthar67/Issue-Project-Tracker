@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 10/6/2021
+ *  Created by Jay Suthar on 11/6/2021
  */
 
 .dashboard-Container {
@@ -32,7 +32,9 @@
     transform: scale(0.7);
     margin-right: 0.5rem;
 }
-
+.userName{
+    margin-right: 1rem;
+}
 .mainApp-Container {
     display: flex;
     flex-direction: column;
