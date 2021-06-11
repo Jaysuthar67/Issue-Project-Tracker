@@ -46,42 +46,51 @@ function IssueButton(props) {
         );
     } else if (props.issue_priority === "high") {
         return (
-            <ButtonBase className="issueButton-Container-High"
-                        onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
-                <div className='issueButton-InnerDiv'>
-                    <div className="issueButton-Title-High"> {props.issue_title}</div>
-                    <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...</div>
-                    <div className="issueButton-issueCreatedOn">
-                        Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}
+            <IssueLifecycleTooltip lifecycle={props.issue_lifecycle}>
+                <ButtonBase className="issueButton-Container-High"
+                            onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
+                    <div className='issueButton-InnerDiv'>
+                        <div className="issueButton-Title-High"> {props.issue_title}</div>
+                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...
+                        </div>
+                        <div className="issueButton-issueCreatedOn">
+                            Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}
+                        </div>
                     </div>
-                </div>
-            </ButtonBase>
+                </ButtonBase>
+            </IssueLifecycleTooltip>
         );
     } else if (props.issue_priority === "normal") {
         return (
-            <ButtonBase className="issueButton-Container-Normal"
-                        onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
-                <div className='issueButton-InnerDiv'>
-                    <div className="issueButton-Title-Normal"> {props.issue_title}</div>
-                    <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...</div>
-                    <div className="issueButton-issueCreatedOn">
-                        Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}
+            <IssueLifecycleTooltip lifecycle={props.issue_lifecycle}>
+                <ButtonBase className="issueButton-Container-Normal"
+                            onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
+                    <div className='issueButton-InnerDiv'>
+                        <div className="issueButton-Title-Normal"> {props.issue_title}</div>
+                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...
+                        </div>
+                        <div className="issueButton-issueCreatedOn">
+                            Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}
+                        </div>
                     </div>
-                </div>
-            </ButtonBase>
+                </ButtonBase>
+            </IssueLifecycleTooltip>
         );
     } else {
         return (
-            <ButtonBase className="issueButton-Container-Low"
-                        onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
-                <div className='issueButton-InnerDiv'>
-                    <div className="issueButton-Title-Low"> {props.issue_title}</div>
-                    <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...</div>
-                    <div className="issueButton-issueCreatedOn">
-                        Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}
+            <IssueLifecycleTooltip lifecycle={props.issue_lifecycle}>
+                <ButtonBase className="issueButton-Container-Low"
+                            onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
+                    <div className='issueButton-InnerDiv'>
+                        <div className="issueButton-Title-Low"> {props.issue_title}</div>
+                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...
+                        </div>
+                        <div className="issueButton-issueCreatedOn">
+                            Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}
+                        </div>
                     </div>
-                </div>
-            </ButtonBase>
+                </ButtonBase>
+            </IssueLifecycleTooltip>
         );
     }
 }

@@ -132,6 +132,15 @@ class Dashboard extends Component {
             }
         });
     }
+    newIssueHandler = (projectId)=>{
+        this.setState({
+            selectedItem: {
+                itemType: "newIssue",
+                projectId: [projectId],
+                issueId: null
+            }
+        })
+    }
 
     render() {
         return (
@@ -182,7 +191,9 @@ class Dashboard extends Component {
                                                             color="primary" size="small" onClick={this.newProjectHandler}
                                                             startIcon={<AddIcon/>}>New Project</Button></div>
                                                 {!this.state.dataLoading ? <ProjectsDisplay
-                                                        selectProjectHandler={this.selectProjectHandler}/> :
+                                                        selectProjectHandler={this.selectProjectHandler}
+                                                        newIssueHandler={this.newIssueHandler}
+                                                    /> :
                                                     <></>}
                                             </Grid>
                                             <Grid className="issue-Container" item xs={3}>
@@ -193,7 +204,7 @@ class Dashboard extends Component {
                                             </Grid>
                                             <Grid className="active-Element" item xs={6}>
                                                 {!this.state.dataLoading ?
-                                                    <ActiveElement selectedItem={this.state.selectedItem}/> :
+                                                    <ActiveElement selectedItem={this.state.selectedItem} newIssueHandler={this.newIssueHandler}/> :
                                                     <></>}
                                             </Grid>
                                         </Grid>

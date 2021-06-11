@@ -21,9 +21,40 @@
     padding-left: 0.5rem;
     border-bottom-color: var(--background-light);
 }
-
+.active-New-issue{
+    margin-left: auto!important;
+    margin-right: 1rem!important;
+}
 .activeElement-Title {
     font-size: 2rem;
     margin-top: 0.5rem;
     margin-left: 0.5rem;
+}
+
+.activeElement-Meta{
+    margin-left: 0.2rem;
+}
+.mate-Date {
+    width: 100%;
+    flex-grow: 2;
+    font-family: "Roboto Light", sans-serif;
+    font-style: italic;
+    font-size: 0.7rem;
+    color: var(--light-text);
+}
+
+.urgent {
+    color: var(--secondary-main);
+}
+
+.high {
+    color: var(--high-priority);
+}
+
+.normal {
+
+}
+
+.low {
+    color: var(--light-text);
 }

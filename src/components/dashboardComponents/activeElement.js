@@ -7,6 +7,10 @@ import React, {Component} from 'react';
 import {AuthConsumer} from "../Contexts/auth";
 import './activeElement.css';
 import DataContext from "../Contexts/data";
+import ActiveIssueTitle from "./activeIssueTitle";
+import firebase from "firebase/app";
+import {Button} from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 
 class ActiveElement extends Component {
     constructor(props) {
@@ -52,6 +56,8 @@ class ActiveElement extends Component {
                     <div className="activeElement-Container">
                         <div className="activeElement-BreadCrumbs">
                             Project / {project.projectTitle}
+                            <Button className="active-New-issue" variant="contained" color="primary" size="small"
+                                    startIcon={<AddIcon/>} onClick={()=> this.props.newIssueHandler([project.projectID])}>Create New Issue</Button>
                         </div>
                         <div className="activeElement-Title">
                             {project.projectTitle}
@@ -75,17 +81,25 @@ class ActiveElement extends Component {
                     const {issues, title} = val[projectId][0];
                     if (projectId === this.props.selectedItem.projectId[0][0]) {
                         for (let issuesKey in issues) {
-                            if (issuesKey === this.props.selectedItem.issueId){
-                                let {issueCreatedOn,issue_description,issue_lifecycle,issue_priority,issue_title,createdBy}=issues[issuesKey];
-                                issue={
-                                    issueId:issuesKey,
-                                    issueCreatedOn:issueCreatedOn,
-                                    issue_description:issue_description,
-                                    issue_lifecycle:issue_lifecycle,
-                                    issue_priority:issue_priority,
-                                    issue_title:issue_title,
-                                    createdBy:createdBy,
-                                    projectTitle:title
+                            if (issuesKey === this.props.selectedItem.issueId) {
+                                let {
+                                    issueCreatedOn,
+                                    issue_description,
+                                    issue_lifecycle,
+                                    issue_priority,
+                                    issue_title,
+                                    createdBy
+                                } = issues[issuesKey];
+                                let issueCreatedOn1 = new firebase.firestore.Timestamp(issueCreatedOn.seconds, 0).toDate();
+                                issue = {
+                                    issueId: issuesKey,
+                                    issueCreatedOn: issueCreatedOn1,
+                                    issue_description: issue_description,
+                                    issue_lifecycle: issue_lifecycle,
+                                    issue_priority: issue_priority,
+                                    issue_title: issue_title,
+                                    createdBy: createdBy,
+                                    projectTitle: title
                                 }
                                 break;
                             }
@@ -98,16 +112,25 @@ class ActiveElement extends Component {
                         <div className="activeElement-BreadCrumbs">
                             Project / {issue.projectTitle} / {issue.issue_title}
                         </div>
-                        <div className="activeElement-Title">
-                            {issue.issue_title}
+                        <ActiveIssueTitle issue={issue}/>
+                        <div className="activeElement-Meta">
+                            <div className="mate-Date">
+                                Created On
+                                : {issue.issueCreatedOn.toDateString()} | {issue.issueCreatedOn.toLocaleTimeString()}
+                            </div>
                         </div>
-                        <h3>Issue:</h3>{this.props.selectedItem.issueId}
                     </div>
                 );
             } else if (this.props.selectedItem.itemType === "newProject") {
                 return (
                     <div className="activeElement-Container">
                         <h3>New Project</h3>{}
+                    </div>
+                );
+            } else if (this.props.selectedItem.itemType === "newIssue") {
+                return (
+                    <div className="activeElement-Container">
+                        <h3>New Issue</h3>{this.props.selectedItem.projectId}
                     </div>
                 );
             } else {

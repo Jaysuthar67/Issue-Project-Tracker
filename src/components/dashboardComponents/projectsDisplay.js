@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 10/6/2021
+ *  Created by Jay Suthar on 11/6/2021
  */
 import React, {Component} from 'react';
 import './projectDisplay.css'
@@ -47,6 +47,7 @@ class ProjectsDisplay extends Component {
                                 key={project.projectID} projectTitle={project.projectTitle}
                                 selectProjectHandler={this.props.selectProjectHandler}
                                 issueCount={project.issueCount} projectID={project.projectID}
+                                newIssueHandler={this.props.newIssueHandler}
                             />);
                             return (
                                 <>{projectRender}

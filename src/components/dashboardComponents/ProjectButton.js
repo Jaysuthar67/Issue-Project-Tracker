@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 10/6/2021
+ *  Created by Jay Suthar on 11/6/2021
  */
 
 import React from 'react';
@@ -17,7 +17,7 @@ function ProjectButton(props) {
             <Tooltip title="No. Of Issues">
                 <div className="issue-Count">{props.issueCount}</div>
             </Tooltip>
-            <Tooltip title="Add New Issue">
+            <Tooltip title="Add New Issue" onClick={()=>props.newIssueHandler(props.projectID)}>
                 <IconButton size="small">
                     <AddIcon/>
                 </IconButton>
