@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 11/6/2021
+ *  Created by Jay Suthar on 12/6/2021
  */
 
 import React, {Component} from 'react';
@@ -9,16 +9,38 @@ import './activeElement.css';
 import DataContext from "../Contexts/data";
 import ActiveIssueTitle from "./activeIssueTitle";
 import firebase from "firebase/app";
-import {Button} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import ActiveIssueLifeCycle from "./activeIssueLifeCycle";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import {deleteIssueHandler} from "../../firebaseHelperFunctions";
 
 class ActiveElement extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            editProject: false,
-            editIssue: false
+            issueLifecycle: null,
+            deleteDialog: false,
         }
+    }
+
+    openDeleteIssueDialogHandler = () => {
+        this.setState({
+            deleteDialog: true
+        })
+    }
+    onDeleteDialogClosed = () => {
+        this.setState({
+            deleteDialog: false
+        })
+    }
+    onDeleteDialogConfirmed = (projectID, issueID) => {
+        deleteIssueHandler(projectID, issueID);
+        this.setState({
+            deleteDialog: false
+        })
+        window.location.reload();
     }
 
     render() {
@@ -57,7 +79,9 @@ class ActiveElement extends Component {
                         <div className="activeElement-BreadCrumbs">
                             Project / {project.projectTitle}
                             <Button className="active-New-issue" variant="contained" color="primary" size="small"
-                                    startIcon={<AddIcon/>} onClick={()=> this.props.newIssueHandler([project.projectID])}>Create New Issue</Button>
+                                    startIcon={<AddIcon/>}
+                                    onClick={() => this.props.newIssueHandler([project.projectID])}>Create New
+                                Issue</Button>
                         </div>
                         <div className="activeElement-Title">
                             {project.projectTitle}
@@ -83,12 +107,8 @@ class ActiveElement extends Component {
                         for (let issuesKey in issues) {
                             if (issuesKey === this.props.selectedItem.issueId) {
                                 let {
-                                    issueCreatedOn,
-                                    issue_description,
-                                    issue_lifecycle,
-                                    issue_priority,
-                                    issue_title,
-                                    createdBy
+                                    issueCreatedOn, issue_description, issue_lifecycle,
+                                    issue_priority, issue_title, createdBy
                                 } = issues[issuesKey];
                                 let issueCreatedOn1 = new firebase.firestore.Timestamp(issueCreatedOn.seconds, 0).toDate();
                                 issue = {
@@ -117,6 +137,51 @@ class ActiveElement extends Component {
                             <div className="mate-Date">
                                 Created On
                                 : {issue.issueCreatedOn.toDateString()} | {issue.issueCreatedOn.toLocaleTimeString()}
+                                <br/>
+                                <b> Created By : {issue.createdBy}</b>
+                            </div>
+                            <div className="mate-LifeCycle">
+                                <AuthConsumer>
+                                    {(value1) => {
+                                        if (issue.createdBy === value1.email) {
+                                            return (
+                                                <>
+                                                    <Button className="edit-IssueButton" variant="contained"
+                                                            color="primary" size="small"
+                                                            startIcon={<EditIcon/>}>Edit</Button>
+                                                    <Button className="delete-IssueButton" variant="contained"
+                                                            color="secondary" size="small"
+                                                            onClick={this.openDeleteIssueDialogHandler}
+                                                            startIcon={<DeleteIcon/>}>Delete</Button>
+                                                    <Dialog open={this.state.deleteDialog}
+                                                            disableBackdropClick
+                                                            disableEscapeKeyDown
+                                                            maxWidth="xs">
+                                                        <DialogTitle>Delete this Issue ? </DialogTitle>
+                                                        <DialogContent>
+                                                            <DialogContentText>
+                                                                Are You Sure?
+                                                                <br/> "{issue.issue_title}" will Be Deleted.
+                                                            </DialogContentText>
+                                                            <DialogActions>
+                                                                <Button onClick={this.onDeleteDialogClosed}
+                                                                        color="secondary" autoFocus>
+                                                                    Cancel
+                                                                </Button>
+                                                                <Button variant="contained"
+                                                                        onClick={() => this.onDeleteDialogConfirmed(this.props.selectedItem.projectId[0][0], issue.issueId)}
+                                                                        color="secondary">
+                                                                    Delete
+                                                                </Button>
+                                                            </DialogActions>
+                                                        </DialogContent>
+                                                    </Dialog>
+                                                </>
+                                            );
+                                        }
+                                    }}
+                                </AuthConsumer>
+                                <ActiveIssueLifeCycle issue={issue} projctId={this.props.selectedItem.projectId[0][0]}/>
                             </div>
                         </div>
                     </div>

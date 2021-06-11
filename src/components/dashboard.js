@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 11/6/2021
+ *  Created by Jay Suthar on 12/6/2021
  */
 import logo from '../assets/AppIcon.svg';
 import React, {Component} from 'react';
@@ -70,13 +70,21 @@ class Dashboard extends Component {
         FirebaseAuth.sendPasswordResetEmail(this.context.email)
             .then(() => {
                 alert(`Password Reset Link was sent to : \n ${this.context.email}`);
+                FirebaseAuth.signOut().then(() => {
+                    // Sign-out successful.
+                    this.firebaseRealtimeListener = undefined;
+                }).catch((error) => {
+                    console.log(error);
+                    // An error happened.
+                });
                 this.setState({
                     userMenuButtonAnchor: null
                 })
-            }).catch((err) => {
-            console.log(err);
-            alert("Something Went Wrong !")
-        });
+            })
+            .catch((err) => {
+                console.log(err);
+                alert("Something Went Wrong !")
+            });
     }
 
     componentDidMount() {
@@ -123,7 +131,7 @@ class Dashboard extends Component {
             }
         });
     }
-    newProjectHandler = ()=>{
+    newProjectHandler = () => {
         this.setState({
             selectedItem: {
                 itemType: "newProject",
@@ -132,7 +140,7 @@ class Dashboard extends Component {
             }
         });
     }
-    newIssueHandler = (projectId)=>{
+    newIssueHandler = (projectId) => {
         this.setState({
             selectedItem: {
                 itemType: "newIssue",
@@ -188,7 +196,8 @@ class Dashboard extends Component {
                                             <Grid className="projects-Container custom-Scrollbar" item xs={3}>
                                                 <div className="new-Project-container">
                                                     <Button className="new-Project-button" variant="contained"
-                                                            color="primary" size="small" onClick={this.newProjectHandler}
+                                                            color="primary" size="small"
+                                                            onClick={this.newProjectHandler}
                                                             startIcon={<AddIcon/>}>New Project</Button></div>
                                                 {!this.state.dataLoading ? <ProjectsDisplay
                                                         selectProjectHandler={this.selectProjectHandler}
@@ -204,7 +213,8 @@ class Dashboard extends Component {
                                             </Grid>
                                             <Grid className="active-Element" item xs={6}>
                                                 {!this.state.dataLoading ?
-                                                    <ActiveElement selectedItem={this.state.selectedItem} newIssueHandler={this.newIssueHandler}/> :
+                                                    <ActiveElement selectedItem={this.state.selectedItem}
+                                                                   newIssueHandler={this.newIssueHandler}/> :
                                                     <></>}
                                             </Grid>
                                         </Grid>

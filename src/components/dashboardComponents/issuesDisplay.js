@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 11/6/2021
+ *  Created by Jay Suthar on 12/6/2021
  */
 import React, {Component} from 'react';
 import './issueDisplay.css'
@@ -184,7 +184,7 @@ class IssuesDisplay extends Component {
                                 return (issuesRender);
                             } else {
                                 return (
-                                    <div className="no-projects-found">No Issues Found </div>
+                                    <div className="no-projects-found">Nothing Selected</div>
                                 );
                             }
                         }}
