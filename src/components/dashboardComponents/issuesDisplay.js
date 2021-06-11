@@ -47,13 +47,14 @@ class IssuesDisplay extends Component {
         });
     }
     filterMenuCloseHandler = () => {
+        this.searchInputRef.current.children[0].value = ""
         this.setState({
-            filterMenuAnchor: null
+            filterMenuAnchor: null,
+            search: false
         });
     }
 
     issuesSearchHandler = (e) => {
-        console.log(this.searchInputRef.current.children[0].value);
         if (e.target.value) {
             this.setState({
                 search: true,
@@ -101,7 +102,7 @@ class IssuesDisplay extends Component {
                     </ButtonBase>
                     <Menu anchorEl={this.state.filterMenuAnchor}
                           keepMounted open={Boolean(this.state.filterMenuAnchor)}
-                          onClose={this.onFilterFinishedHandler}>
+                          onClose={this.filterMenuCloseHandler}>
                         <MenuItem onClick={this.onFilterUrgentHandler}>Urgent</MenuItem>
                         <MenuItem onClick={this.onFilterFinishedHandler}>Finished</MenuItem>
                     </Menu>
@@ -117,12 +118,14 @@ class IssuesDisplay extends Component {
                                         let issueCreatedOn = issues[issueId].issueCreatedOn.seconds;
                                         let issue_priority = issues[issueId].issue_priority;
                                         let issue_description = issues[issueId].issue_description;
+                                        let issue_lifecycle = issues[issueId].issue_lifecycle;
                                         let singleIssue = {
                                             issueId: issueId,
                                             issue_title: issue_title,
                                             issueCreatedOn: issueCreatedOn,
                                             issue_priority: issue_priority,
                                             issue_description: issue_description,
+                                            issue_lifecycle: issue_lifecycle
                                         }
                                         if (this.state.searchTerm.toLowerCase() === "finished") {
                                             if (issues[issueId].issue_lifecycle === "finished") {
@@ -142,12 +145,14 @@ class IssuesDisplay extends Component {
                                         let issueCreatedOn = issues[issueId].issueCreatedOn.seconds;
                                         let issue_priority = issues[issueId].issue_priority;
                                         let issue_description = issues[issueId].issue_description;
+                                        let issue_lifecycle = issues[issueId].issue_lifecycle
                                         let singleIssue = {
                                             issueId: issueId,
                                             issue_title: issue_title,
                                             issueCreatedOn: issueCreatedOn,
                                             issue_priority: issue_priority,
                                             issue_description: issue_description,
+                                            issue_lifecycle:issue_lifecycle
                                         }
                                         if (issues[issueId].issue_lifecycle !== "finished") {
                                             newIssues.push(singleIssue);
@@ -168,9 +173,13 @@ class IssuesDisplay extends Component {
                                     }
                                 });
                                 let issuesRender = newIssues.map((newIssue) => <IssueButton key={newIssue.issueId}
+                                                                                            projectId={this.props.selectedItem.projectId[0][0]}
+                                                                                            selectIssueHandler={this.props.selectIssueHandler}
+                                                                                            issueId={newIssue.issueId}
                                                                                             issue_title={newIssue.issue_title}
                                                                                             issueCreatedOn={newIssue.issueCreatedOn}
                                                                                             issue_priority={newIssue.issue_priority}
+                                                                                            issue_lifecycle={newIssue.issue_lifecycle}
                                                                                             issue_description={newIssue.issue_description}/>);
                                 return (issuesRender);
                             } else {

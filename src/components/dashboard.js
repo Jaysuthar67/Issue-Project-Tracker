@@ -32,6 +32,7 @@ import ActiveElement from "./dashboardComponents/activeElement";
 class Dashboard extends Component {
 
     firebaseRealtimeListener;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -113,6 +114,24 @@ class Dashboard extends Component {
             }
         })
     }
+    selectIssueHandler = (projectId, issueId) => {
+        this.setState({
+            selectedItem: {
+                itemType: "issue",
+                projectId: [[projectId]],
+                issueId: issueId
+            }
+        });
+    }
+    newProjectHandler = ()=>{
+        this.setState({
+            selectedItem: {
+                itemType: "newProject",
+                projectId: null,
+                issueId: null
+            }
+        });
+    }
 
     render() {
         return (
@@ -137,8 +156,10 @@ class Dashboard extends Component {
                                                     <MoreVertIcon/>
                                                 </IconButton>
                                                 <Menu anchorEl={this.state.userMenuButtonAnchor}
-                                                      keepMounted open={Boolean(this.state.userMenuButtonAnchor)} onClose={this.userMenuCloseHandler}>
-                                                    <MenuItem onClick={this.passwordResetHandler}>Reset Password</MenuItem>
+                                                      keepMounted open={Boolean(this.state.userMenuButtonAnchor)}
+                                                      onClose={this.userMenuCloseHandler}>
+                                                    <MenuItem onClick={this.passwordResetHandler}>Reset
+                                                        Password</MenuItem>
                                                     <MenuItem onClick={this.signOutHandler}>Logout</MenuItem>
                                                 </Menu>
                                                 <Tooltip title="Logout">
@@ -158,7 +179,7 @@ class Dashboard extends Component {
                                             <Grid className="projects-Container custom-Scrollbar" item xs={3}>
                                                 <div className="new-Project-container">
                                                     <Button className="new-Project-button" variant="contained"
-                                                            color="primary" size="small"
+                                                            color="primary" size="small" onClick={this.newProjectHandler}
                                                             startIcon={<AddIcon/>}>New Project</Button></div>
                                                 {!this.state.dataLoading ? <ProjectsDisplay
                                                         selectProjectHandler={this.selectProjectHandler}/> :
@@ -166,7 +187,8 @@ class Dashboard extends Component {
                                             </Grid>
                                             <Grid className="issue-Container" item xs={3}>
                                                 {!this.state.dataLoading ?
-                                                    <IssuesDisplay selectedItem={this.state.selectedItem}/> :
+                                                    <IssuesDisplay selectedItem={this.state.selectedItem}
+                                                                   selectIssueHandler={this.selectIssueHandler}/> :
                                                     <></>}
                                             </Grid>
                                             <Grid className="active-Element" item xs={6}>
