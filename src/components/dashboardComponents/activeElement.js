@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 12/6/2021
+ *  Created by Jay Suthar on 13/6/2021
  */
 
 import React, {Component} from 'react';
@@ -15,6 +15,7 @@ import ActiveIssueLifeCycle from "./activeIssueLifeCycle";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ProjectUsersRender from "./projectUsersRender";
+import NewOrEditIssue from "./NewOrEditIssue";
 
 class ActiveElement extends Component {
     constructor(props) {
@@ -290,14 +291,15 @@ class ActiveElement extends Component {
             } else if (this.props.selectedItem.itemType === "newIssue") {
                 return (
                     <div className="activeElement-Container">
-                        <h3>New Issue</h3>{this.props.selectedItem.projectId}
-                        <br/>
-                        <br/>
-                        <br/>
-                        <button
-                            onClick={() => this.props.newRandomIssueHandler(this.props.selectedItem.projectId[0][0])}>Add
-                            New Random Issue
-                        </button>
+                        <div className="activeElement-BreadCrumbs">
+                            Project / Create New Issue
+                        </div>
+                        <NewOrEditIssue type="new" projectId={this.props.selectedItem.projectId[0][0]}
+                                        generalCancelHandler={this.props.generalCancelHandler}/>
+                        {/*<button*/}
+                        {/*    onClick={() => this.props.newRandomIssueHandler(this.props.selectedItem.projectId[0][0])}>Add*/}
+                        {/*    New Random Issue*/}
+                        {/*</button>*/}
                     </div>
                 );
             } else {

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 12/6/2021
+ *  Created by Jay Suthar on 13/6/2021
  */
 import logo from '../assets/AppIcon.svg';
 import React, {Component} from 'react';
@@ -160,8 +160,7 @@ class Dashboard extends Component {
             }
         })
     }
-
-    deleteProjectHandler = (projectId)=>{
+    deleteProjectHandler = (projectId) => {
         deletePoject(projectId)
         this.setState({
             selectedItem: {
@@ -171,7 +170,6 @@ class Dashboard extends Component {
             }
         });
     }
-
     newRandomIssueHandler = (projectId) => {
         addNewRandomIssue(projectId);
         this.setState({
@@ -183,7 +181,7 @@ class Dashboard extends Component {
         });
         setTimeout(() => {
             this.setState({
-                dataLoading:false,
+                dataLoading: false,
                 selectedItem: {
                     itemType: "project",
                     projectId: [[projectId]],
@@ -192,8 +190,7 @@ class Dashboard extends Component {
             });
         }, 1000)
     }
-
-    newRandomProjectHandler =()=>{
+    newRandomProjectHandler = () => {
         this.setState({
             selectedItem: {
                 itemType: null,
@@ -202,6 +199,16 @@ class Dashboard extends Component {
             }
         });
         createNewProject();
+    }
+
+    generalCancelHandler = () => {
+        this.setState({
+            selectedItem: {
+                itemType: null,
+                projectId: null,
+                issueId: null
+            }
+        });
     }
 
     render() {
@@ -273,7 +280,8 @@ class Dashboard extends Component {
                                                                    deleteIssueConfirmHandler={this.deleteIssueConfirmHandler}
                                                                    newRandomIssueHandler={this.newRandomIssueHandler}
                                                                    newRandomProjectHandler={this.newRandomProjectHandler}
-                                                                   deleteProjectHandler={this.deleteProjectHandler}/> :
+                                                                   deleteProjectHandler={this.deleteProjectHandler}
+                                                                   generalCancelHandler={this.generalCancelHandler}/> :
                                                     <></>}
                                             </Grid>
                                         </Grid>

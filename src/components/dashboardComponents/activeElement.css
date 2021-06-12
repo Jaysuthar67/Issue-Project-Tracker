@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 12/6/2021
+ *  Created by Jay Suthar on 13/6/2021
  */
 
 .activeElement-Container {
@@ -21,10 +21,12 @@
     padding-left: 0.5rem;
     border-bottom-color: var(--background-light);
 }
-.active-New-issue{
-    margin-left: auto!important;
-    margin-right: 1rem!important;
+
+.active-New-issue {
+    margin-left: auto !important;
+    margin-right: 1rem !important;
 }
+
 .activeElement-Title {
     font-size: 2rem;
     margin-top: 0.5rem;
@@ -32,12 +34,13 @@
     word-wrap: normal;
 }
 
-.activeElement-Meta{
+.activeElement-Meta {
     margin-left: 0.5rem;
     display: flex;
     width: 90%;
     align-items: center;
 }
+
 .mate-Date {
     width: 50%;
     font-family: "Roboto Light", sans-serif;
@@ -45,23 +48,27 @@
     font-size: 0.7rem;
     color: var(--light-text);
 }
-.mate-LifeCycle{
+
+.mate-LifeCycle {
     width: 50%;
     display: flex;
     align-items: center;
 }
-.mate-Left{
+
+.mate-Left {
     width: 50%;
     display: flex;
     align-items: center;
 }
-.activeElement-Project-Grid{
+
+.activeElement-Project-Grid {
     width: 95%;
     max-height: 56vh;
     padding: 0.5rem;
     overflow-y: hidden;
 }
-.activeElement-projectDescription{
+
+.activeElement-projectDescription {
     background-color: var(--background);
     padding: 1rem;
     border-radius: 4px;
@@ -69,11 +76,13 @@
     max-height: 55vh;
     overflow-y: auto;
 }
-.activeElement-Users{
+
+.activeElement-Users {
     max-height: 55vh;
     overflow-y: auto;
 }
-.activeIssue-issue_description{
+
+.activeIssue-issue_description {
     width: 90%;
     margin-left: 0.5rem;
     margin-top: 0.5rem;
@@ -84,14 +93,17 @@
     max-height: 55vh;
     overflow-y: auto;
 }
-.edit-IssueButton{
+
+.edit-IssueButton {
     height: 50%;
-    margin-right: 1rem!important;
+    margin-right: 1rem !important;
 }
-.delete-IssueButton{
+
+.delete-IssueButton {
     height: 50%;
-    margin-right: 1rem!important;
+    margin-right: 1rem !important;
 }
+
 .urgent {
     color: var(--secondary-main);
 }
@@ -106,4 +118,61 @@
 
 .low {
     color: var(--light-text);
+}
+
+.new-or-edit-issue {
+    padding: 0.5rem;
+    overflow-x: hidden;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.issue-title {
+    font-family: "Roboto Light", sans-serif;
+    font-size: 0.8rem;
+}
+
+.Issue-Form {
+    width: 95%;
+    height: 56vh;
+    margin-top: 0.8rem;
+    margin-bottom: 0.5rem;
+    overflow-y: auto;
+    border: 0.2 rem solid var(--background);
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.issueTextField-title {
+    width: 60%;
+}
+
+.issueTextField-description {
+    width: 99%;
+    margin-top: 0.8rem !important;
+}
+.issueSelect-Priority{
+    width: 30%;
+    margin-left: 1rem!important;
+}
+.placeholder-Div-5vh {
+    height: 5vh;
+    width: 100%;
+}
+
+.confirm-buttons {
+    align-self: flex-end;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.button-rl-m05 {
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
 }

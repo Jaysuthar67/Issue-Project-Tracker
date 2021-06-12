@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 12/6/2021
+ *  Created by Jay Suthar on 13/6/2021
  */
 import React, {Component} from 'react';
 import './issueDisplay.css'
@@ -95,7 +95,7 @@ class IssuesDisplay extends Component {
                     <div className="issues-search">
                         <SearchIcon/>
                         <InputBase className="issues-search-input" onChange={this.issuesSearchHandler}
-                                   placeholder="Search…" ref={this.searchInputRef}/>
+                                   placeholder="Search…" type="search" ref={this.searchInputRef}/>
                     </div>
                     <ButtonBase className="issues-Filter-Button" onClick={this.filterMenuOpenHandler}>
                         <FilterListRoundedIcon/>
