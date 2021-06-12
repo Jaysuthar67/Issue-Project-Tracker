@@ -9,12 +9,12 @@ import './activeElement.css';
 import DataContext from "../Contexts/data";
 import ActiveIssueTitle from "./activeIssueTitle";
 import firebase from "firebase/app";
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import ActiveIssueLifeCycle from "./activeIssueLifeCycle";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {deleteIssueHandler} from "../../firebaseHelperFunctions";
+import ProjectUsersRender from "./projectUsersRender";
 
 class ActiveElement extends Component {
     constructor(props) {
@@ -36,11 +36,10 @@ class ActiveElement extends Component {
         })
     }
     onDeleteDialogConfirmed = (projectID, issueID) => {
-        deleteIssueHandler(projectID, issueID);
         this.setState({
             deleteDialog: false
-        })
-        window.location.reload();
+        });
+        this.props.deleteIssueConfirmHandler(projectID, issueID);
     }
 
     render() {
@@ -62,13 +61,14 @@ class ActiveElement extends Component {
                         issueCount = issuesKeys.length;
                     }
                     if (projectId === this.props.selectedItem.projectId[0][0]) {
+                        let projectCreatedOn = new firebase.firestore.Timestamp(createdOn.seconds, 0).toDate();
                         project = {
                             projectID: this.props.selectedItem.projectId[0][0],
                             projectTitle: title,
                             projectDescription: description,
                             projectOwner: owner,
                             projectUsers: users,
-                            projectCreatedOn: createdOn,
+                            projectCreatedOn: projectCreatedOn,
                             issueCount1: issueCount
                         }
                         break;
@@ -81,20 +81,64 @@ class ActiveElement extends Component {
                             <Button className="active-New-issue" variant="contained" color="primary" size="small"
                                     startIcon={<AddIcon/>}
                                     onClick={() => this.props.newIssueHandler([project.projectID])}>Create New
-                                Issue</Button>
+                                Issue / Task</Button>
                         </div>
                         <div className="activeElement-Title">
                             {project.projectTitle}
                         </div>
-                        <AuthConsumer>
-                            {(value1) => {
-                                if (project.projectOwner === value1.email) {
-                                    return "Editable";
-                                } else {
-                                    return "Not-Editable";
-                                }
-                            }}
-                        </AuthConsumer>
+                        <div className="activeElement-Meta">
+                            <div className="mate-Date">
+                                Project Created On
+                                : {project.projectCreatedOn.toDateString()} | {project.projectCreatedOn.toLocaleTimeString()}
+                                <br/> <b> Project Owner: {project.projectOwner}</b>
+                                <br/> No. of Issues in this project : <b>{project.issueCount1}</b>
+                            </div>
+                            <div className="mate-Left">
+                                <AuthConsumer>
+                                    {(value1) => {
+                                        if (project.projectOwner === value1.email) {
+                                            return (
+                                                <>
+                                                    <Button className="edit-IssueButton" variant="contained"
+                                                            color="primary" size="small"
+                                                            startIcon={<EditIcon/>}>Edit</Button>
+                                                    <Button className="edit-IssueButton" variant="contained"
+                                                            color="secondary" size="small"
+                                                            startIcon={<DeleteIcon/>}>Delete</Button>
+                                                </>
+                                            );
+                                        } else {
+                                        }
+                                    }}
+                                </AuthConsumer>
+                            </div>
+                        </div>
+                        <Grid className="activeElement-Project-Grid" container spacing={0}>
+                            <Grid item xs={9}>
+                                <div className="activeElement-projectDescription custom-Scrollbar">
+                                    {project.projectDescription}
+                                </div>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <div className="activeElement-Users custom-Scrollbar">
+                                    <AuthConsumer>
+                                        {() => {
+                                            let usersRender = []
+                                            for (const userKey in project.projectUsers) {
+                                                usersRender.push(<ProjectUsersRender
+                                                    user={project.projectUsers[userKey]}/>)
+                                            }
+                                            return (<>
+                                                    {usersRender}
+                                                    <div className="projectsListPlaceHolder"/>
+                                                </>
+                                            );
+                                        }}
+                                    </AuthConsumer>
+                                </div>
+                            </Grid>
+                        </Grid>
+
                     </div>
                 );
             } else if (this.props.selectedItem.itemType === "issue") {
@@ -181,8 +225,12 @@ class ActiveElement extends Component {
                                         }
                                     }}
                                 </AuthConsumer>
-                                <ActiveIssueLifeCycle issue={issue} projctId={this.props.selectedItem.projectId[0][0]}/>
+                                <ActiveIssueLifeCycle issue_lifecycle={issue.issue_lifecycle} issueId={issue.issueId}
+                                                      projctId={this.props.selectedItem.projectId[0][0]}/>
                             </div>
+                        </div>
+                        <div className="activeIssue-issue_description custom-Scrollbar">
+                            {issue.issue_description}
                         </div>
                     </div>
                 );
@@ -196,6 +244,13 @@ class ActiveElement extends Component {
                 return (
                     <div className="activeElement-Container">
                         <h3>New Issue</h3>{this.props.selectedItem.projectId}
+                        <br/>
+                        <br/>
+                        <br/>
+                        <button
+                            onClick={() => this.props.newRandomIssueHandler(this.props.selectedItem.projectId[0][0])}>Add
+                            New Random Issue
+                        </button>
                     </div>
                 );
             } else {

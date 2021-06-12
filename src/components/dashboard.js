@@ -28,6 +28,7 @@ import ProjectsDisplay from "./dashboardComponents/projectsDisplay";
 import IssuesDisplay from "./dashboardComponents/issuesDisplay";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ActiveElement from "./dashboardComponents/activeElement";
+import {addNewRandomIssue, deleteIssueHandler} from "../firebaseHelperFunctions";
 
 class Dashboard extends Component {
 
@@ -140,6 +141,19 @@ class Dashboard extends Component {
             }
         });
     }
+    deleteIssueConfirmHandler = (projectId, issueID) => {
+        console.log("Deleted Issue From Dashboard");
+        console.log(projectId);
+        console.log(issueID);
+        this.setState({
+            selectedItem: {
+                itemType: "project",
+                projectId: [[projectId]],
+                issueId: null
+            }
+        });
+        deleteIssueHandler(projectId, issueID);
+    }
     newIssueHandler = (projectId) => {
         this.setState({
             selectedItem: {
@@ -148,6 +162,38 @@ class Dashboard extends Component {
                 issueId: null
             }
         })
+    }
+
+    deleteProjectHandler = (projectId)=>{
+
+        this.setState({
+            selectedItem: {
+                itemType: null,
+                projectId: null,
+                issueId: null
+            }
+        });
+    }
+
+    newRandomIssueHandler = (projectId) => {
+        addNewRandomIssue(projectId);
+        this.setState({
+            selectedItem: {
+                itemType: null,
+                projectId: null,
+                issueId: null
+            }
+        });
+        setTimeout(() => {
+            this.setState({
+                dataLoading:false,
+                selectedItem: {
+                    itemType: "project",
+                    projectId: [[projectId]],
+                    issueId: null
+                }
+            });
+        }, 1000)
     }
 
     render() {
@@ -208,13 +254,16 @@ class Dashboard extends Component {
                                             <Grid className="issue-Container" item xs={3}>
                                                 {!this.state.dataLoading ?
                                                     <IssuesDisplay selectedItem={this.state.selectedItem}
-                                                                   selectIssueHandler={this.selectIssueHandler}/> :
+                                                                   selectIssueHandler={this.selectIssueHandler}
+                                                    /> :
                                                     <></>}
                                             </Grid>
                                             <Grid className="active-Element" item xs={6}>
                                                 {!this.state.dataLoading ?
                                                     <ActiveElement selectedItem={this.state.selectedItem}
-                                                                   newIssueHandler={this.newIssueHandler}/> :
+                                                                   newIssueHandler={this.newIssueHandler}
+                                                                   deleteIssueConfirmHandler={this.deleteIssueConfirmHandler}
+                                                                   newRandomIssueHandler={this.newRandomIssueHandler}/> :
                                                     <></>}
                                             </Grid>
                                         </Grid>

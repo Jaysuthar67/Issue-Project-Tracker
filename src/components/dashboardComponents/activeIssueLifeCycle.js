@@ -3,16 +3,19 @@
  *  Created by Jay Suthar on 12/6/2021
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FormControl, MenuItem, Select} from "@material-ui/core";
 import {updateIssueLifecycle} from "../../firebaseHelperFunctions";
 
 function ActiveIssueLifeCycle(props) {
-    const [lifeCycle,setLifeCycle] = useState(props.issue.issue_lifecycle);
+    const [lifeCycle,setLifeCycle] = useState(props.issue_lifecycle);
     const lifeCycleHandler = (event) => {
-        updateIssueLifecycle(props.projctId, props.issue.issueId, event.target.value);
+        updateIssueLifecycle(props.projctId, props.issueId, event.target.value);
         setLifeCycle(event.target.value);
     };
+    useEffect(()=>{
+        setLifeCycle(props.issue_lifecycle);
+    },[props.issue_lifecycle])
 
     return (
         <FormControl variant="outlined" size="small">
