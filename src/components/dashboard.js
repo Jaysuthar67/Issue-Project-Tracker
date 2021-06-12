@@ -28,7 +28,7 @@ import ProjectsDisplay from "./dashboardComponents/projectsDisplay";
 import IssuesDisplay from "./dashboardComponents/issuesDisplay";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ActiveElement from "./dashboardComponents/activeElement";
-import {addNewRandomIssue, deleteIssueHandler} from "../firebaseHelperFunctions";
+import {addNewRandomIssue, createNewProject, deleteIssueHandler, deletePoject} from "../firebaseHelperFunctions";
 
 class Dashboard extends Component {
 
@@ -142,9 +142,6 @@ class Dashboard extends Component {
         });
     }
     deleteIssueConfirmHandler = (projectId, issueID) => {
-        console.log("Deleted Issue From Dashboard");
-        console.log(projectId);
-        console.log(issueID);
         this.setState({
             selectedItem: {
                 itemType: "project",
@@ -165,7 +162,7 @@ class Dashboard extends Component {
     }
 
     deleteProjectHandler = (projectId)=>{
-
+        deletePoject(projectId)
         this.setState({
             selectedItem: {
                 itemType: null,
@@ -194,6 +191,17 @@ class Dashboard extends Component {
                 }
             });
         }, 1000)
+    }
+
+    newRandomProjectHandler =()=>{
+        this.setState({
+            selectedItem: {
+                itemType: null,
+                projectId: null,
+                issueId: null
+            }
+        });
+        createNewProject();
     }
 
     render() {
@@ -263,7 +271,9 @@ class Dashboard extends Component {
                                                     <ActiveElement selectedItem={this.state.selectedItem}
                                                                    newIssueHandler={this.newIssueHandler}
                                                                    deleteIssueConfirmHandler={this.deleteIssueConfirmHandler}
-                                                                   newRandomIssueHandler={this.newRandomIssueHandler}/> :
+                                                                   newRandomIssueHandler={this.newRandomIssueHandler}
+                                                                   newRandomProjectHandler={this.newRandomProjectHandler}
+                                                                   deleteProjectHandler={this.deleteProjectHandler}/> :
                                                     <></>}
                                             </Grid>
                                         </Grid>

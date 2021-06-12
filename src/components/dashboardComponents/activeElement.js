@@ -21,25 +21,43 @@ class ActiveElement extends Component {
         super(props);
         this.state = {
             issueLifecycle: null,
-            deleteDialog: false,
+            deleteIssueDialog: false,
+            deleteProjectDialog: false
         }
     }
-
+//Delete Issue
     openDeleteIssueDialogHandler = () => {
         this.setState({
-            deleteDialog: true
+            deleteIssueDialog: true
         })
     }
-    onDeleteDialogClosed = () => {
+    ondeleteIssueDialogClosed = () => {
         this.setState({
-            deleteDialog: false
+            deleteIssueDialog: false
         })
     }
-    onDeleteDialogConfirmed = (projectID, issueID) => {
+    ondeleteIssueDialogConfirmed = (projectID, issueID) => {
         this.setState({
-            deleteDialog: false
+            deleteIssueDialog: false
         });
         this.props.deleteIssueConfirmHandler(projectID, issueID);
+    }
+    // DeleteProject
+    openDeleteProjectDialogHandler = () => {
+        this.setState({
+            deleteProjectDialog: true
+        })
+    }
+    ondeleteProjectDialogClosed = () => {
+        this.setState({
+            deleteProjectDialog: false
+        })
+    }
+    ondeleteProjectDialogConfirmed = (projectID) => {
+        this.setState({
+            deleteProjectDialog: false
+        });
+        this.props.deleteProjectHandler(projectID);
     }
 
     render() {
@@ -104,7 +122,31 @@ class ActiveElement extends Component {
                                                             startIcon={<EditIcon/>}>Edit</Button>
                                                     <Button className="edit-IssueButton" variant="contained"
                                                             color="secondary" size="small"
+                                                            onClick={this.openDeleteProjectDialogHandler}
                                                             startIcon={<DeleteIcon/>}>Delete</Button>
+                                                    <Dialog open={this.state.deleteProjectDialog}
+                                                            disableBackdropClick
+                                                            disableEscapeKeyDown
+                                                            maxWidth="xs">
+                                                        <DialogTitle>Delete this Project ? </DialogTitle>
+                                                        <DialogContent>
+                                                            <DialogContentText>
+                                                                Are You Sure?
+                                                                <br/> "{project.projectTitle}" will Be Deleted.
+                                                            </DialogContentText>
+                                                            <DialogActions>
+                                                                <Button onClick={this.ondeleteProjectDialogClosed}
+                                                                        color="secondary" autoFocus>
+                                                                    Cancel
+                                                                </Button>
+                                                                <Button variant="contained"
+                                                                        onClick={() => this.ondeleteProjectDialogConfirmed(project.projectID)}
+                                                                        color="secondary">
+                                                                    Delete
+                                                                </Button>
+                                                            </DialogActions>
+                                                        </DialogContent>
+                                                    </Dialog>
                                                 </>
                                             );
                                         } else {
@@ -126,6 +168,7 @@ class ActiveElement extends Component {
                                             let usersRender = []
                                             for (const userKey in project.projectUsers) {
                                                 usersRender.push(<ProjectUsersRender
+                                                    key={userKey}
                                                     user={project.projectUsers[userKey]}/>)
                                             }
                                             return (<>
@@ -197,7 +240,7 @@ class ActiveElement extends Component {
                                                             color="secondary" size="small"
                                                             onClick={this.openDeleteIssueDialogHandler}
                                                             startIcon={<DeleteIcon/>}>Delete</Button>
-                                                    <Dialog open={this.state.deleteDialog}
+                                                    <Dialog open={this.state.deleteIssueDialog}
                                                             disableBackdropClick
                                                             disableEscapeKeyDown
                                                             maxWidth="xs">
@@ -208,12 +251,12 @@ class ActiveElement extends Component {
                                                                 <br/> "{issue.issue_title}" will Be Deleted.
                                                             </DialogContentText>
                                                             <DialogActions>
-                                                                <Button onClick={this.onDeleteDialogClosed}
+                                                                <Button onClick={this.ondeleteIssueDialogClosed}
                                                                         color="secondary" autoFocus>
                                                                     Cancel
                                                                 </Button>
                                                                 <Button variant="contained"
-                                                                        onClick={() => this.onDeleteDialogConfirmed(this.props.selectedItem.projectId[0][0], issue.issueId)}
+                                                                        onClick={() => this.ondeleteIssueDialogConfirmed(this.props.selectedItem.projectId[0][0], issue.issueId)}
                                                                         color="secondary">
                                                                     Delete
                                                                 </Button>
@@ -237,7 +280,11 @@ class ActiveElement extends Component {
             } else if (this.props.selectedItem.itemType === "newProject") {
                 return (
                     <div className="activeElement-Container">
-                        <h3>New Project</h3>{}
+                        <h3> New Project </h3>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <button onClick={this.props.newRandomProjectHandler}>New Random Project</button>
                     </div>
                 );
             } else if (this.props.selectedItem.itemType === "newIssue") {
