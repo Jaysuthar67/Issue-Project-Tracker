@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 11/6/2021
+ *  Created by Jay Suthar on 14/6/2021
  */
 import React, {Component} from 'react';
 import './projectDisplay.css'
@@ -55,7 +55,6 @@ class ProjectsDisplay extends Component {
                                 </>
                             );
                         } else {
-                            console.log("No projects Found for Current User");
                             return (
                                 <Tooltip title="It looks like you don't have any Project Yet">
                                     <div className="no-projects-found">No Projects Found</div>

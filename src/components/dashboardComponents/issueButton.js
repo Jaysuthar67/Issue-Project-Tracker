@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 11/6/2021
+ *  Created by Jay Suthar on 14/6/2021
  */
 
 import React from 'react';
@@ -17,7 +17,7 @@ function IssueButton(props) {
                         onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
                 <div className='issueButton-InnerDiv'>
                     <div className="issueButton-Title-Normal"> {props.issue_title}</div>
-                    <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...</div>
+                    <div className="issueButton-Description-Low">{props.issue_description.substring(0, 125)} ...</div>
                     <Tooltip
                         title={`Created On: ${timestamp.toDate().toLocaleDateString()} | ${timestamp.toDate().toLocaleTimeString()}`}>
                         <div className="issueButton-issueCreatedOn">
@@ -35,8 +35,7 @@ function IssueButton(props) {
                             onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
                     <div className='issueButton-InnerDiv'>
                         <div className="issueButton-Title-Urgent"> {props.issue_title}</div>
-                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...
-                        </div>
+                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 125)} ... </div>
                         <div className="issueButton-issueCreatedOn">
                             Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}
                         </div>
@@ -51,7 +50,7 @@ function IssueButton(props) {
                             onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
                     <div className='issueButton-InnerDiv'>
                         <div className="issueButton-Title-High"> {props.issue_title}</div>
-                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...
+                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 125)} ...
                         </div>
                         <div className="issueButton-issueCreatedOn">
                             Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}
@@ -67,7 +66,7 @@ function IssueButton(props) {
                             onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
                     <div className='issueButton-InnerDiv'>
                         <div className="issueButton-Title-Normal"> {props.issue_title}</div>
-                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...
+                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 125)} ...
                         </div>
                         <div className="issueButton-issueCreatedOn">
                             Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}
@@ -83,7 +82,7 @@ function IssueButton(props) {
                             onClick={() => props.selectIssueHandler(props.projectId, props.issueId)}>
                     <div className='issueButton-InnerDiv'>
                         <div className="issueButton-Title-Low"> {props.issue_title}</div>
-                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 135)} ...
+                        <div className="issueButton-Description-Low">{props.issue_description.substring(0, 125)} ...
                         </div>
                         <div className="issueButton-issueCreatedOn">
                             Created On : {timestamp.toDate().toDateString()} | {timestamp.toDate().toLocaleTimeString()}

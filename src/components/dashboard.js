@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 13/6/2021
+ *  Created by Jay Suthar on 14/6/2021
  */
 import logo from '../assets/AppIcon.svg';
 import React, {Component} from 'react';
@@ -28,7 +28,15 @@ import ProjectsDisplay from "./dashboardComponents/projectsDisplay";
 import IssuesDisplay from "./dashboardComponents/issuesDisplay";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ActiveElement from "./dashboardComponents/activeElement";
-import {addNewIssue, createNewProject, deleteIssueHandler, deletePoject, updateIssue} from "../firebaseHelperFunctions";
+import {
+    addNewIssue,
+    createNewProject,
+    deleteIssueHandler,
+    deletePoject,
+    updateIssue,
+    updateProject
+} from "../firebaseHelperFunctions";
+import {collectionName} from "../firebaseConfig";
 
 class Dashboard extends Component {
 
@@ -41,7 +49,7 @@ class Dashboard extends Component {
             data: null,
             userMenuButtonAnchor: null,
             selectedItem: {
-                itemType: null,
+                itemType: "firstLoad",
                 projectId: null,
                 issueId: null
             }
@@ -89,7 +97,7 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        this.firebaseRealtimeListener = Firestore.collection("test_colloection")
+        this.firebaseRealtimeListener = Firestore.collection(collectionName)
             .where("users", "array-contains", this.context.email)
             .onSnapshot((querySnapshot) => {
                 let dataObject = [];
@@ -101,7 +109,7 @@ class Dashboard extends Component {
                 });
                 this.setState({
                     dataLoading: false,
-                    data: dataObject
+                    data: dataObject,
                 });
             });
     }
@@ -219,9 +227,6 @@ class Dashboard extends Component {
         }, 1000)
     }
     newProjectAddHandler = (newProject_title,newProject_Desc,newProject_Users) => {
-        console.log("newProject_title : ",newProject_title);
-        console.log("newProject_Desc : ",newProject_Desc);
-        console.log("newProject_Users : ",newProject_Users);
         this.setState({
             selectedItem: {
                 itemType: null,
@@ -230,6 +235,26 @@ class Dashboard extends Component {
             }
         });
         createNewProject(newProject_title,newProject_Desc,newProject_Users);
+    }
+    editProjectSelectHandler = (projectId) =>{
+        this.setState({
+            selectedItem: {
+                itemType: "editProject",
+                projectId: [[projectId]],
+                issueId: null
+            }
+        })
+    }
+
+    editProjectConfirmHandler = (projectId,newProject_title,newProject_Desc,newProject_Users) =>{
+        this.setState({
+            selectedItem: {
+                itemType: null,
+                projectId: null,
+                issueId: null
+            }
+        });
+        updateProject(projectId,newProject_title,newProject_Desc,newProject_Users);
     }
 
     generalCancelHandler = () => {
@@ -311,6 +336,8 @@ class Dashboard extends Component {
                                                                    deleteIssueConfirmHandler={this.deleteIssueConfirmHandler}
                                                                    newIssueAddHandler={this.newIssueAddHandler}
                                                                    deleteProjectHandler={this.deleteProjectHandler}
+                                                                   editProjectSelectHandler={this.editProjectSelectHandler}
+                                                                   editProjectConfirmHandler={this.editProjectConfirmHandler}
                                                                    editIssueHandler={this.editIssueHandler}
                                                                    editIssueAddHandler={this.editIssueAddHandler}
                                                                    generalCancelHandler={this.generalCancelHandler}/> :

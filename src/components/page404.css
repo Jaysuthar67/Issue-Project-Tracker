@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2021. All Rights Reserved
+ *  Created by Jay Suthar on 14/6/2021
+ */
+
+.container-404 {
+    text-align: center;
+    height: 100vh;
+    width: 100%;
+    color: white;
+    overflow: hidden;
+    margin-top: 5vh;
+}
+.txt404{
+    text-align: center;
+    font-size: 10rem;
+}
+.notFound{
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    letter-spacing: 1ch;
+}
+.backLink{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+.backButton{
+    padding: 1rem 2rem !important;
+}
+.backLink a{
+    text-decoration: none;
+}

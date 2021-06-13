@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 13/6/2021
+ *  Created by Jay Suthar on 14/6/2021
  */
 
 import React, {Component} from 'react';
@@ -66,7 +66,7 @@ class ActiveElement extends Component {
 
     render() {
         let value = this.context;
-        if (value.length === 0 && this.props.selectedItem.itemType) {
+        if (value.length === 0 && this.props.selectedItem.itemType === "firstLoad") {
             return (
                 <div className="no-projects-found">Nothing Selected</div>
             );
@@ -124,7 +124,8 @@ class ActiveElement extends Component {
                                                     <>
                                                         <Button className="edit-IssueButton" variant="contained"
                                                                 color="primary" size="small"
-                                                                startIcon={<EditIcon/>}>Edit</Button>
+                                                                startIcon={<EditIcon/>}
+                                                                onClick={() => this.props.editProjectSelectHandler(project.projectID)}>Edit</Button>
                                                         <Button className="edit-IssueButton" variant="contained"
                                                                 color="secondary" size="small"
                                                                 onClick={this.openDeleteProjectDialogHandler}
@@ -292,8 +293,25 @@ class ActiveElement extends Component {
                 return (
                     <div className="activeElement-Container">
                         <NewOrEditProject type="new"
+                                          newProjectAddHandler={this.props.newProjectAddHandler}
                                           generalCancelHandler={this.props.generalCancelHandler}/>
-                        {/*<button onClick={this.props.newProjectAddHandler}>New Random Project</button>*/}
+                    </div>
+                );
+            } else if (this.props.selectedItem.itemType === "editProject") {
+                return (
+                    <div className="activeElement-Container">
+                        <DataConsumer>
+                            {value1 => {
+                                return (<NewOrEditProject type="edit"
+                                                          value={value1}
+                                                          projectId={this.props.selectedItem.projectId[0][0]}
+                                                          newProjectAddHandler={this.props.newProjectAddHandler}
+                                                          editProjectConfirmHandler={this.props.editProjectConfirmHandler}
+                                                          generalCancelHandler={this.props.generalCancelHandler}/>);
+                            }}
+
+                        </DataConsumer>
+
                     </div>
                 );
             } else if (this.props.selectedItem.itemType === "newIssue") {

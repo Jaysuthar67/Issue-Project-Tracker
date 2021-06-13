@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 11/6/2021
+ *  Created by Jay Suthar on 14/6/2021
  */
 
 import './App.css';
@@ -8,12 +8,13 @@ import React, {Component} from 'react';
 import {createMuiTheme, LinearProgress, ThemeProvider} from "@material-ui/core";
 import muiThemeConfig from "./components/muiThemeConfig";
 import Dashboard from "./components/dashboard";
-import {BrowserRouter as Router, Redirect, Route} from "react-router-dom";
+import {BrowserRouter as Router, Redirect, Route,Switch} from "react-router-dom";
 import Login from "./components/login";
 import Signup from "./components/signup";
 import {AuthProvider} from "./components/Contexts/auth";
 import "firebase/auth";
 import {FirebaseAuth} from "./firebaseInit";
+import Page404 from "./components/page404";
 
 class App extends Component {
     authStateListener;
@@ -60,6 +61,7 @@ class App extends Component {
                     <Router>
                         <AuthProvider value={this.state.user}>
                             <div className="App">
+                                <Switch>
                                 <Route exact path="/">
                                     {this.state.user ? <Redirect to="/dashboard"/> : <Redirect to="/login"/>}
                                 </Route>
@@ -72,6 +74,10 @@ class App extends Component {
                                 <Route path="/signup">
                                     <Signup/>
                                 </Route>
+                                    <Route path="*">
+                                        <Page404/>
+                                    </Route>
+                                </Switch>
                             </div>
 
                         </AuthProvider>

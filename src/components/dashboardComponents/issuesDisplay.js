@@ -1,10 +1,10 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 13/6/2021
+ *  Created by Jay Suthar on 14/6/2021
  */
 import React, {Component} from 'react';
 import './issueDisplay.css'
-import {ButtonBase, InputBase, Menu, MenuItem} from "@material-ui/core";
+import {ButtonBase, InputBase, Menu, MenuItem, Tooltip} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import DataContext, {DataConsumer} from "../Contexts/data";
 import IssueButton from "./issueButton";
@@ -76,7 +76,6 @@ class IssuesDisplay extends Component {
     render() {
         let value = this.context;
         let issues = null;
-
         if (value.length !== 0 && this.props.selectedItem.projectId) {
             for (let valKey in value) {
                 let val = value[valKey];
@@ -98,9 +97,11 @@ class IssuesDisplay extends Component {
                         <InputBase className="issues-search-input" onChange={this.issuesSearchHandler}
                                    placeholder="Search…" type="search" ref={this.searchInputRef}/>
                     </div>
-                    <ButtonBase className="issues-Filter-Button" onClick={this.filterMenuOpenHandler}>
-                        <FilterListRoundedIcon/>
-                    </ButtonBase>
+                    <Tooltip title="Filters">
+                        <ButtonBase className="issues-Filter-Button" onClick={this.filterMenuOpenHandler}>
+                            <FilterListRoundedIcon/>
+                        </ButtonBase>
+                    </Tooltip>
                     <Menu anchorEl={this.state.filterMenuAnchor}
                           keepMounted open={Boolean(this.state.filterMenuAnchor)}
                           onClose={this.filterMenuCloseHandler}>
@@ -153,7 +154,7 @@ class IssuesDisplay extends Component {
                                             issueCreatedOn: issueCreatedOn,
                                             issue_priority: issue_priority,
                                             issue_description: issue_description,
-                                            issue_lifecycle:issue_lifecycle
+                                            issue_lifecycle: issue_lifecycle
                                         }
                                         if (issues[issueId].issue_lifecycle !== "finished") {
                                             newIssues.push(singleIssue);

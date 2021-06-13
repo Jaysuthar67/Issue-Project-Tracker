@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 13/6/2021
+ *  Created by Jay Suthar on 14/6/2021
  */
 
 .activeElement-Container {
@@ -238,4 +238,20 @@
     width: 80%;
     margin-right: 0.5rem!important;
 }
-
+.individual-Users{
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+.UserEmail{
+    width: auto;
+    flex-grow: 1;
+}
+.deleteUser-Button{
+    justify-self: flex-end;
+    align-self: flex-end;
+}
+.usersArray-Placeholder{
+    height: 1rem;
+    width: 100%;
+}
