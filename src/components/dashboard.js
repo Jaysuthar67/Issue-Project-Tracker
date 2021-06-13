@@ -28,7 +28,7 @@ import ProjectsDisplay from "./dashboardComponents/projectsDisplay";
 import IssuesDisplay from "./dashboardComponents/issuesDisplay";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ActiveElement from "./dashboardComponents/activeElement";
-import {addNewRandomIssue, createNewProject, deleteIssueHandler, deletePoject} from "../firebaseHelperFunctions";
+import {addNewIssue, createNewProject, deleteIssueHandler, deletePoject, updateIssue} from "../firebaseHelperFunctions";
 
 class Dashboard extends Component {
 
@@ -160,6 +160,15 @@ class Dashboard extends Component {
             }
         })
     }
+    editIssueHandler = (projectId, issueId) => {
+        this.setState({
+            selectedItem: {
+                itemType: "editIssue",
+                projectId: [[projectId]],
+                issueId: issueId
+            }
+        })
+    }
     deleteProjectHandler = (projectId) => {
         deletePoject(projectId)
         this.setState({
@@ -170,8 +179,8 @@ class Dashboard extends Component {
             }
         });
     }
-    newRandomIssueHandler = (projectId) => {
-        addNewRandomIssue(projectId);
+    editIssueAddHandler = (projectId, issueId, issue_title, issue_desc, issue_priority) => {
+        updateIssue(projectId, issueId, issue_title, issue_desc, issue_priority);
         this.setState({
             selectedItem: {
                 itemType: null,
@@ -181,7 +190,26 @@ class Dashboard extends Component {
         });
         setTimeout(() => {
             this.setState({
-                dataLoading: false,
+                selectedItem: {
+                    itemType: "issue",
+                    projectId: [[projectId]],
+                    issueId: issueId
+                }
+            });
+        }, 1000)
+
+    }
+    newIssueAddHandler = (projectId, issue_title, issue_desc, issue_priority) => {
+        addNewIssue(projectId, issue_title, issue_desc, issue_priority);
+        this.setState({
+            selectedItem: {
+                itemType: null,
+                projectId: null,
+                issueId: null
+            }
+        });
+        setTimeout(() => {
+            this.setState({
                 selectedItem: {
                     itemType: "project",
                     projectId: [[projectId]],
@@ -190,7 +218,7 @@ class Dashboard extends Component {
             });
         }, 1000)
     }
-    newRandomProjectHandler = () => {
+    newProjectAddHandler = () => {
         this.setState({
             selectedItem: {
                 itemType: null,
@@ -277,10 +305,12 @@ class Dashboard extends Component {
                                                 {!this.state.dataLoading ?
                                                     <ActiveElement selectedItem={this.state.selectedItem}
                                                                    newIssueHandler={this.newIssueHandler}
+                                                                   newProjectAddHandler={this.newProjectAddHandler}
                                                                    deleteIssueConfirmHandler={this.deleteIssueConfirmHandler}
-                                                                   newRandomIssueHandler={this.newRandomIssueHandler}
-                                                                   newRandomProjectHandler={this.newRandomProjectHandler}
+                                                                   newIssueAddHandler={this.newIssueAddHandler}
                                                                    deleteProjectHandler={this.deleteProjectHandler}
+                                                                   editIssueHandler={this.editIssueHandler}
+                                                                   editIssueAddHandler={this.editIssueAddHandler}
                                                                    generalCancelHandler={this.generalCancelHandler}/> :
                                                     <></>}
                                             </Grid>

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 12/6/2021
+ *  Created by Jay Suthar on 13/6/2021
  */
 
 import {FirebaseAuth, Firestore} from "./firebaseInit";
@@ -62,7 +62,7 @@ export const deletePoject = (projectID) => {
     });
 }
 
-export const addNewRandomIssue = (projectID) => {
+export const addNewIssue = (projectId, issue_title, issue_desc, issue_priority) => {
     let issueUUID = uuidv4();
     let newIssue = {
         issues: {
@@ -70,14 +70,32 @@ export const addNewRandomIssue = (projectID) => {
                 issueCreatedOn: firebase.firestore.FieldValue.serverTimestamp(),
                 createdBy: FirebaseAuth.currentUser.email,
                 issue_lifecycle: "new",
-                issue_description: "Some Description",
-                issue_title: "Issue Title",
-                issue_priority: "high"
+                issue_description: issue_desc,
+                issue_title: issue_title,
+                issue_priority: issue_priority
             }
-
         }
     }
-    Firestore.collection('test_colloection').doc(projectID).set(newIssue, {merge: true}).then(() => {
+    Firestore.collection('test_colloection').doc(projectId).set(newIssue, {merge: true}).then(() => {
+    }).catch((error) => {
+        console.error("Error writing document: ", error);
+    });
+}
+
+export const updateIssue = (projectId,issueId, issue_title, issue_desc, issue_priority) => {
+    let newIssue = {
+        issues: {
+            [issueId]: {
+                issueCreatedOn: firebase.firestore.FieldValue.serverTimestamp(),
+                createdBy: FirebaseAuth.currentUser.email,
+                issue_lifecycle: "new",
+                issue_description: issue_desc,
+                issue_title: issue_title,
+                issue_priority: issue_priority
+            }
+        }
+    }
+    Firestore.collection('test_colloection').doc(projectId).set(newIssue, {merge: true}).then(() => {
     }).catch((error) => {
         console.error("Error writing document: ", error);
     });

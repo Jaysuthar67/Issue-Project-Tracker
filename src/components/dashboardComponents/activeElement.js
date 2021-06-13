@@ -6,7 +6,7 @@
 import React, {Component} from 'react';
 import {AuthConsumer} from "../Contexts/auth";
 import './activeElement.css';
-import DataContext from "../Contexts/data";
+import DataContext, {DataConsumer} from "../Contexts/data";
 import ActiveIssueTitle from "./activeIssueTitle";
 import firebase from "firebase/app";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid} from "@material-ui/core";
@@ -17,6 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ProjectUsersRender from "./projectUsersRender";
 import NewOrEditIssue from "./NewOrEditIssue";
 
+
 class ActiveElement extends Component {
     constructor(props) {
         super(props);
@@ -26,6 +27,7 @@ class ActiveElement extends Component {
             deleteProjectDialog: false
         }
     }
+
 //Delete Issue
     openDeleteIssueDialogHandler = () => {
         this.setState({
@@ -63,7 +65,7 @@ class ActiveElement extends Component {
 
     render() {
         let value = this.context;
-        if (value.length === 0) {
+        if (value.length === 0 && this.props.selectedItem.itemType) {
             return (
                 <div className="no-projects-found">Nothing Selected</div>
             );
@@ -93,98 +95,104 @@ class ActiveElement extends Component {
                         break;
                     }
                 }
-                return (
-                    <div className="activeElement-Container">
-                        <div className="activeElement-BreadCrumbs">
-                            Project / {project.projectTitle}
-                            <Button className="active-New-issue" variant="contained" color="primary" size="small"
-                                    startIcon={<AddIcon/>}
-                                    onClick={() => this.props.newIssueHandler([project.projectID])}>Create New
-                                Issue / Task</Button>
-                        </div>
-                        <div className="activeElement-Title">
-                            {project.projectTitle}
-                        </div>
-                        <div className="activeElement-Meta">
-                            <div className="mate-Date">
-                                Project Created On
-                                : {project.projectCreatedOn.toDateString()} | {project.projectCreatedOn.toLocaleTimeString()}
-                                <br/> <b> Project Owner: {project.projectOwner}</b>
-                                <br/> No. of Issues in this project : <b>{project.issueCount1}</b>
+                if (project) {
+                    return (
+                        <div className="activeElement-Container">
+                            <div className="activeElement-BreadCrumbs">
+                                Project / {project.projectTitle}
+                                <Button className="active-New-issue" variant="contained" color="primary" size="small"
+                                        startIcon={<AddIcon/>}
+                                        onClick={() => this.props.newIssueHandler([project.projectID])}>Create New
+                                    Issue / Task</Button>
                             </div>
-                            <div className="mate-Left">
-                                <AuthConsumer>
-                                    {(value1) => {
-                                        if (project.projectOwner === value1.email) {
-                                            return (
-                                                <>
-                                                    <Button className="edit-IssueButton" variant="contained"
-                                                            color="primary" size="small"
-                                                            startIcon={<EditIcon/>}>Edit</Button>
-                                                    <Button className="edit-IssueButton" variant="contained"
-                                                            color="secondary" size="small"
-                                                            onClick={this.openDeleteProjectDialogHandler}
-                                                            startIcon={<DeleteIcon/>}>Delete</Button>
-                                                    <Dialog open={this.state.deleteProjectDialog}
-                                                            disableBackdropClick
-                                                            disableEscapeKeyDown
-                                                            maxWidth="xs">
-                                                        <DialogTitle>Delete this Project ? </DialogTitle>
-                                                        <DialogContent>
-                                                            <DialogContentText>
-                                                                Are You Sure?
-                                                                <br/> "{project.projectTitle}" will Be Deleted.
-                                                            </DialogContentText>
-                                                            <DialogActions>
-                                                                <Button onClick={this.ondeleteProjectDialogClosed}
-                                                                        color="secondary" autoFocus>
-                                                                    Cancel
-                                                                </Button>
-                                                                <Button variant="contained"
-                                                                        onClick={() => this.ondeleteProjectDialogConfirmed(project.projectID)}
-                                                                        color="secondary">
-                                                                    Delete
-                                                                </Button>
-                                                            </DialogActions>
-                                                        </DialogContent>
-                                                    </Dialog>
-                                                </>
-                                            );
-                                        } else {
-                                        }
-                                    }}
-                                </AuthConsumer>
+                            <div className="activeElement-Title">
+                                {project.projectTitle}
                             </div>
-                        </div>
-                        <Grid className="activeElement-Project-Grid" container spacing={0}>
-                            <Grid item xs={9}>
-                                <div className="activeElement-projectDescription custom-Scrollbar">
-                                    {project.projectDescription}
+                            <div className="activeElement-Meta">
+                                <div className="mate-Date">
+                                    Project Created On
+                                    : {project.projectCreatedOn.toDateString()} | {project.projectCreatedOn.toLocaleTimeString()}
+                                    <br/> <b> Project Owner: {project.projectOwner}</b>
+                                    <br/> No. of Issues in this project : <b>{project.issueCount1}</b>
                                 </div>
-                            </Grid>
-                            <Grid item xs={3}>
-                                <div className="activeElement-Users custom-Scrollbar">
+                                <div className="mate-Left">
                                     <AuthConsumer>
-                                        {() => {
-                                            let usersRender = []
-                                            for (const userKey in project.projectUsers) {
-                                                usersRender.push(<ProjectUsersRender
-                                                    key={userKey}
-                                                    user={project.projectUsers[userKey]}/>)
+                                        {(value1) => {
+                                            if (project.projectOwner === value1.email) {
+                                                return (
+                                                    <>
+                                                        <Button className="edit-IssueButton" variant="contained"
+                                                                color="primary" size="small"
+                                                                startIcon={<EditIcon/>}>Edit</Button>
+                                                        <Button className="edit-IssueButton" variant="contained"
+                                                                color="secondary" size="small"
+                                                                onClick={this.openDeleteProjectDialogHandler}
+                                                                startIcon={<DeleteIcon/>}>Delete</Button>
+                                                        <Dialog open={this.state.deleteProjectDialog}
+                                                                disableBackdropClick
+                                                                disableEscapeKeyDown
+                                                                maxWidth="xs">
+                                                            <DialogTitle>Delete this Project ? </DialogTitle>
+                                                            <DialogContent>
+                                                                <DialogContentText>
+                                                                    Are You Sure?
+                                                                    <br/> "{project.projectTitle}" will Be Deleted.
+                                                                </DialogContentText>
+                                                                <DialogActions>
+                                                                    <Button onClick={this.ondeleteProjectDialogClosed}
+                                                                            color="secondary" autoFocus>
+                                                                        Cancel
+                                                                    </Button>
+                                                                    <Button variant="contained"
+                                                                            onClick={() => this.ondeleteProjectDialogConfirmed(project.projectID)}
+                                                                            color="secondary">
+                                                                        Delete
+                                                                    </Button>
+                                                                </DialogActions>
+                                                            </DialogContent>
+                                                        </Dialog>
+                                                    </>
+                                                );
+                                            } else {
                                             }
-                                            return (<>
-                                                    {usersRender}
-                                                    <div className="projectsListPlaceHolder"/>
-                                                </>
-                                            );
                                         }}
                                     </AuthConsumer>
                                 </div>
+                            </div>
+                            <Grid className="activeElement-Project-Grid" container spacing={0}>
+                                <Grid item xs={9}>
+                                    <div className="activeElement-projectDescription custom-Scrollbar">
+                                        {project.projectDescription}
+                                    </div>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <div className="activeElement-Users custom-Scrollbar">
+                                        <AuthConsumer>
+                                            {() => {
+                                                let usersRender = []
+                                                for (const userKey in project.projectUsers) {
+                                                    usersRender.push(<ProjectUsersRender
+                                                        key={userKey}
+                                                        user={project.projectUsers[userKey]}/>)
+                                                }
+                                                return (<>
+                                                        {usersRender}
+                                                        <div className="projectsListPlaceHolder"/>
+                                                    </>
+                                                );
+                                            }}
+                                        </AuthConsumer>
+                                    </div>
+                                </Grid>
                             </Grid>
-                        </Grid>
 
-                    </div>
-                );
+                        </div>
+                    );
+                }else {
+                    return (
+                        <div className="no-projects-found">Nothing Selected</div>
+                    );
+                }
             } else if (this.props.selectedItem.itemType === "issue") {
                 let issue = null
                 for (let valkey in value) {
@@ -236,7 +244,8 @@ class ActiveElement extends Component {
                                                 <>
                                                     <Button className="edit-IssueButton" variant="contained"
                                                             color="primary" size="small"
-                                                            startIcon={<EditIcon/>}>Edit</Button>
+                                                            startIcon={<EditIcon/>}
+                                                            onClick={() => this.props.editIssueHandler(this.props.selectedItem.projectId[0][0], issue.issueId)}>Edit</Button>
                                                     <Button className="delete-IssueButton" variant="contained"
                                                             color="secondary" size="small"
                                                             onClick={this.openDeleteIssueDialogHandler}
@@ -285,7 +294,7 @@ class ActiveElement extends Component {
                         <br/>
                         <br/>
                         <br/>
-                        <button onClick={this.props.newRandomProjectHandler}>New Random Project</button>
+                        <button onClick={this.props.newProjectAddHandler}>New Random Project</button>
                     </div>
                 );
             } else if (this.props.selectedItem.itemType === "newIssue") {
@@ -295,7 +304,32 @@ class ActiveElement extends Component {
                             Project / Create New Issue
                         </div>
                         <NewOrEditIssue type="new" projectId={this.props.selectedItem.projectId[0][0]}
-                                        generalCancelHandler={this.props.generalCancelHandler}/>
+                                        generalCancelHandler={this.props.generalCancelHandler}
+                                        newIssueAddHandler={this.props.newIssueAddHandler}/>
+                        {/*<button*/}
+                        {/*    onClick={() => this.props.newRandomIssueHandler(this.props.selectedItem.projectId[0][0])}>Add*/}
+                        {/*    New Random Issue*/}
+                        {/*</button>*/}
+                    </div>
+                );
+            } else if (this.props.selectedItem.itemType === "editIssue") {
+                return (
+                    <div className="activeElement-Container">
+                        <div className="activeElement-BreadCrumbs">
+                            Project / Edit Issue
+                        </div>
+                        <DataConsumer>
+                            {value1 => {
+                                return (<>
+                                    <NewOrEditIssue type="edit" projectId={this.props.selectedItem.projectId[0][0]}
+                                                    generalCancelHandler={this.props.generalCancelHandler}
+                                                    newIssueAddHandler={this.props.newIssueAddHandler}
+                                                    editIssueAddHandler={this.props.editIssueAddHandler}
+                                                    issueId={this.props.selectedItem.issueId}
+                                                    valuex={value1}/>
+                                </>);
+                            }}
+                        </DataConsumer>
                         {/*<button*/}
                         {/*    onClick={() => this.props.newRandomIssueHandler(this.props.selectedItem.projectId[0][0])}>Add*/}
                         {/*    New Random Issue*/}

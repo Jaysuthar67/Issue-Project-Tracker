@@ -7,6 +7,7 @@ import React, {Component} from 'react';
 import {FirebaseAuth} from "../../firebaseInit";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import SaveIcon from '@material-ui/icons/Save';
+import firebase from "firebase/app";
 
 class NewOrEditIssue extends Component {
     issueTitleRef;
@@ -21,15 +22,46 @@ class NewOrEditIssue extends Component {
                 titleNotValid: false,
                 issuePriority: "normal",
                 issueTitleValue: undefined,
-                issueDescValue: undefined
+                issueDescValue: undefined,
+                saveButtonDisable: true
             }
         } else {
-
+            let value = props.valuex;
+            let issue = null
+            for (let valkey in value) {
+                let val = value[valkey];
+                let projectId = Object.keys(val)[0];
+                const {issues, title} = val[projectId][0];
+                if (projectId === this.props.projectId) {
+                    for (let issuesKey in issues) {
+                        if (issuesKey === this.props.issueId) {
+                            let {
+                                issueCreatedOn, issue_description, issue_lifecycle,
+                                issue_priority, issue_title, createdBy
+                            } = issues[issuesKey];
+                            let issueCreatedOn1 = new firebase.firestore.Timestamp(issueCreatedOn.seconds, 0).toDate();
+                            issue = {
+                                issueId: issuesKey,
+                                issueCreatedOn: issueCreatedOn1,
+                                issue_description: issue_description,
+                                issue_lifecycle: issue_lifecycle,
+                                issue_priority: issue_priority,
+                                issue_title: issue_title,
+                                createdBy: createdBy,
+                                projectTitle: title
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
             this.state = {
                 titleNotValid: false,
-                issuePriority: "normal",
-                issueTitleValue: null,
-                issueDescValue: null
+                issuePriority: issue.issue_priority,
+                issueTitleValue: issue.issue_title,
+                issueDescValue: issue.issue_description,
+                saveButtonDisable: false
             }
         }
     }
@@ -42,12 +74,13 @@ class NewOrEditIssue extends Component {
     titleValidator = (e) => {
         if (e.target.value) {
             this.setState({
-                titleNotValid: false
-
+                titleNotValid: false,
+                saveButtonDisable: false
             });
         } else {
             this.setState({
-                titleNotValid: true
+                titleNotValid: true,
+                saveButtonDisable: true
             });
         }
     }
@@ -65,6 +98,17 @@ class NewOrEditIssue extends Component {
         this.setState({
             issuePriority: e.target.value
         })
+    }
+    onSaveClickHandler = () => {
+        if (this.props.type === "new") {
+            this.props.newIssueAddHandler(this.props.projectId,
+                this.state.issueTitleValue,
+                this.state.issueDescValue,
+                this.state.issuePriority);
+        } else {
+            this.props.editIssueAddHandler(this.props.projectId, this.props.issueId, this.state.issueTitleValue,this.state.issueDescValue, this.state.issuePriority);
+        }
+        // console.log(this.props.newIssueAddHandler)
     }
 
     render() {
@@ -98,7 +142,8 @@ class NewOrEditIssue extends Component {
                 </form>
                 <div className="confirm-buttons">
                     <Button className="button-rl-m05" variant="contained" color="primary"
-                            startIcon={<SaveIcon/>}>Save</Button>
+                            startIcon={<SaveIcon/>} onClick={this.onSaveClickHandler}
+                            disabled={this.state.saveButtonDisable}>Save</Button>
                     <Button className="button-rl-m05" color="secondary" size="small"
                             onClick={this.props.generalCancelHandler}>Cancel</Button>
                 </div>
@@ -106,6 +151,5 @@ class NewOrEditIssue extends Component {
         );
     }
 }
-
 
 export default NewOrEditIssue;
