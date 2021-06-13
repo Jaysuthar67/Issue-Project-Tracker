@@ -2,7 +2,7 @@
  * Copyright (c) 2021. All Rights Reserved
  *  Created by Jay Suthar on 14/6/2021
  */
-
+// This is Firebase Config Template
 const FirebaseConfig = {
     apiKey: "[Your API Key]",
     authDomain: "[ Your authDomain ]",
