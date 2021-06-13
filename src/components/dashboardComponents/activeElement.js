@@ -16,6 +16,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ProjectUsersRender from "./projectUsersRender";
 import NewOrEditIssue from "./NewOrEditIssue";
+import NewOrEditProject from "./NewOrEditProject";
 
 
 class ActiveElement extends Component {
@@ -188,7 +189,7 @@ class ActiveElement extends Component {
 
                         </div>
                     );
-                }else {
+                } else {
                     return (
                         <div className="no-projects-found">Nothing Selected</div>
                     );
@@ -290,11 +291,9 @@ class ActiveElement extends Component {
             } else if (this.props.selectedItem.itemType === "newProject") {
                 return (
                     <div className="activeElement-Container">
-                        <h3> New Project </h3>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <button onClick={this.props.newProjectAddHandler}>New Random Project</button>
+                        <NewOrEditProject type="new"
+                                          generalCancelHandler={this.props.generalCancelHandler}/>
+                        {/*<button onClick={this.props.newProjectAddHandler}>New Random Project</button>*/}
                     </div>
                 );
             } else if (this.props.selectedItem.itemType === "newIssue") {
@@ -306,10 +305,6 @@ class ActiveElement extends Component {
                         <NewOrEditIssue type="new" projectId={this.props.selectedItem.projectId[0][0]}
                                         generalCancelHandler={this.props.generalCancelHandler}
                                         newIssueAddHandler={this.props.newIssueAddHandler}/>
-                        {/*<button*/}
-                        {/*    onClick={() => this.props.newRandomIssueHandler(this.props.selectedItem.projectId[0][0])}>Add*/}
-                        {/*    New Random Issue*/}
-                        {/*</button>*/}
                     </div>
                 );
             } else if (this.props.selectedItem.itemType === "editIssue") {
@@ -330,10 +325,6 @@ class ActiveElement extends Component {
                                 </>);
                             }}
                         </DataConsumer>
-                        {/*<button*/}
-                        {/*    onClick={() => this.props.newRandomIssueHandler(this.props.selectedItem.projectId[0][0])}>Add*/}
-                        {/*    New Random Issue*/}
-                        {/*</button>*/}
                     </div>
                 );
             } else {

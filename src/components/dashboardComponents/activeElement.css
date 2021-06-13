@@ -140,7 +140,6 @@
     margin-top: 0.8rem;
     margin-bottom: 0.5rem;
     overflow-y: auto;
-    border: 0.2 rem solid var(--background);
     padding: 0.5rem;
     border-radius: 4px;
 }
@@ -153,10 +152,12 @@
     width: 99%;
     margin-top: 0.8rem !important;
 }
-.issueSelect-Priority{
+
+.issueSelect-Priority {
     width: 30%;
-    margin-left: 1rem!important;
+    margin-left: 1rem !important;
 }
+
 .placeholder-Div-5vh {
     height: 5vh;
     width: 100%;
@@ -176,3 +177,65 @@
     margin-left: 0.5rem !important;
     margin-right: 0.5rem !important;
 }
+
+.new-or-edit-project {
+    height: 80vh;
+    width: 100%;
+}
+
+.newProject-Title {
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+    font-family: "Roboto Light", sans-serif;
+    font-size: 1.5rem;
+}
+
+.Project-Form {
+    width: 95%;
+    height: 40vh;
+    margin-top: 0.8rem;
+    margin-bottom: 0.5rem;
+    overflow-y: auto;
+    padding: 0.5rem;
+    border-bottom: 0.1rem solid var(--background-light);
+}
+
+.newProjectTextField-Title {
+    width: 80%;
+}
+
+.newProjectTextField-Desc {
+    width: 100%;
+    margin-top: 0.8rem !important;
+}
+
+.project-Bottom {
+    width: 100%;
+    overflow-y: hidden;
+    height: 30vh;
+    display: flex;
+    align-items: center;
+}
+
+.usersArray {
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+    height: 30vh;
+    width: 120%;
+}
+
+.usersArray-top {
+    display: flex;
+    align-items: center;
+}
+.usersArray-bottom{
+    height: 20vh;
+    overflow-y: auto;
+    word-wrap: break-word;
+}
+
+.usersArray-TextField {
+    width: 80%;
+    margin-right: 0.5rem!important;
+}
+

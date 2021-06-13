@@ -35,23 +35,26 @@ export const deleteIssueHandler = (projectID, issueID) => {
     });
 }
 
-export const createNewProject = () => {
+export const createNewProject = (newProject_title, newProject_Desc, newProject_Users) => {
     let projectUUID = uuidv4();
-    let users = []
+    let users = newProject_Users;
     users.push(FirebaseAuth.currentUser.email);
+    console.log(users)
     let newProject = {
-        title: `Project Title ${Math.floor(Math.random() * 100)}`,
+        title: newProject_title,
         createdOn: firebase.firestore.FieldValue.serverTimestamp(),
         issues: {},
         users: users,
         owner: FirebaseAuth.currentUser.email,
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        description: newProject_Desc,
     }
-    Firestore.collection('test_colloection').doc(projectUUID).set(newProject, {merge: true}).then(() => {
-
-    }).catch((error) => {
-        console.error("Error:", error);
-    });
+    console.log("Project UUID : ", projectUUID);
+    console.log(newProject);
+    // Firestore.collection('test_colloection').doc(projectUUID).set(newProject, {merge: true}).then(() => {
+    //
+    // }).catch((error) => {
+    //     console.error("Error:", error);
+    // });
 }
 
 export const deletePoject = (projectID) => {
@@ -82,7 +85,7 @@ export const addNewIssue = (projectId, issue_title, issue_desc, issue_priority) 
     });
 }
 
-export const updateIssue = (projectId,issueId, issue_title, issue_desc, issue_priority) => {
+export const updateIssue = (projectId, issueId, issue_title, issue_desc, issue_priority) => {
     let newIssue = {
         issues: {
             [issueId]: {

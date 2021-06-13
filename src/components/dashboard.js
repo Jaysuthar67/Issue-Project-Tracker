@@ -218,7 +218,10 @@ class Dashboard extends Component {
             });
         }, 1000)
     }
-    newProjectAddHandler = () => {
+    newProjectAddHandler = (newProject_title,newProject_Desc,newProject_Users) => {
+        console.log("newProject_title : ",newProject_title);
+        console.log("newProject_Desc : ",newProject_Desc);
+        console.log("newProject_Users : ",newProject_Users);
         this.setState({
             selectedItem: {
                 itemType: null,
@@ -226,7 +229,7 @@ class Dashboard extends Component {
                 issueId: null
             }
         });
-        createNewProject();
+        createNewProject(newProject_title,newProject_Desc,newProject_Users);
     }
 
     generalCancelHandler = () => {
@@ -297,8 +300,7 @@ class Dashboard extends Component {
                                             <Grid className="issue-Container" item xs={3}>
                                                 {!this.state.dataLoading ?
                                                     <IssuesDisplay selectedItem={this.state.selectedItem}
-                                                                   selectIssueHandler={this.selectIssueHandler}
-                                                    /> :
+                                                                   selectIssueHandler={this.selectIssueHandler}/> :
                                                     <></>}
                                             </Grid>
                                             <Grid className="active-Element" item xs={6}>

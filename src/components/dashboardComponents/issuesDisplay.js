@@ -76,6 +76,7 @@ class IssuesDisplay extends Component {
     render() {
         let value = this.context;
         let issues = null;
+
         if (value.length !== 0 && this.props.selectedItem.projectId) {
             for (let valKey in value) {
                 let val = value[valKey];
