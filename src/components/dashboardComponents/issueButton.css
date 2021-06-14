@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 10/6/2021
+ *  Created by Jay Suthar on 14/6/2021
  */
 
 .issueButton-Container-Urgent{
@@ -75,10 +75,7 @@
     background-color: var(--background);
     flex-direction: column;
     align-items: center;
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-bottom: -5px;
+    padding: 10px 10px 0;
 }
 .issueButton-Description {
     flex-grow: 3;

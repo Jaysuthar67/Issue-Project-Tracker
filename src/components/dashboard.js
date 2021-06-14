@@ -189,6 +189,7 @@ class Dashboard extends Component {
     }
     editIssueAddHandler = (projectId, issueId, issue_title, issue_desc, issue_priority) => {
         updateIssue(projectId, issueId, issue_title, issue_desc, issue_priority);
+        alert("Issue Edited");
         this.setState({
             selectedItem: {
                 itemType: null,
@@ -199,12 +200,12 @@ class Dashboard extends Component {
         setTimeout(() => {
             this.setState({
                 selectedItem: {
-                    itemType: "issue",
+                    itemType: "project",
                     projectId: [[projectId]],
-                    issueId: issueId
+                    issueId: null
                 }
             });
-        }, 1000)
+        }, 1000);
 
     }
     newIssueAddHandler = (projectId, issue_title, issue_desc, issue_priority) => {
