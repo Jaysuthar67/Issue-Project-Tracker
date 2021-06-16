@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021. All Rights Reserved
- *  Created by Jay Suthar on 14/6/2021
+ *  Created by Jay Suthar on 16/6/2021
  */
 import logo from '../assets/AppIcon.svg';
 import React, {Component} from 'react';
@@ -189,7 +189,6 @@ class Dashboard extends Component {
     }
     editIssueAddHandler = (projectId, issueId, issue_title, issue_desc, issue_priority) => {
         updateIssue(projectId, issueId, issue_title, issue_desc, issue_priority);
-        alert("Issue Edited");
         this.setState({
             selectedItem: {
                 itemType: null,
